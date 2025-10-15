@@ -47,6 +47,10 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    dateOfBirth: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,
