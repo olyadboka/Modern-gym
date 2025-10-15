@@ -159,17 +159,16 @@ const TrainerPage = () => {
         );
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-black">
       {/* Hero Section */}
-
       <HeroSection
         title="Meet Our Trainers"
-        subtitle="  Our certified fitness professionals are here to guide you on your journey to better health and fitness."
-        backgroundImage="../../assets/images/bg.jpeg"
+        subtitle="Our certified fitness professionals are here to guide you on your journey to better health and fitness."
+        backgroundImage="trainerbg.jpeg"
       />
 
       {/* Filter Section */}
-      <section className="py-12 bg-black border-b">
+      <section className="py-12 bg-black border-b border-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -183,8 +182,8 @@ const TrainerPage = () => {
                 onClick={() => setSelectedSpecialty(specialty.value)}
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
                   selectedSpecialty === specialty.value
-                    ? "bg-primary-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-primary-100 hover:text-primary-700"
+                    ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white"
+                    : "bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white"
                 }`}
               >
                 {specialty.label}
@@ -195,7 +194,7 @@ const TrainerPage = () => {
       </section>
 
       {/* Trainers Grid */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredTrainers.map((trainer, index) => (
@@ -204,7 +203,7 @@ const TrainerPage = () => {
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card group"
+                className="bg-gray-900 rounded-2xl shadow-lg p-6 group hover:shadow-xl transition-shadow duration-300"
               >
                 {/* Trainer Image */}
                 <div className="relative mb-6">
@@ -213,9 +212,9 @@ const TrainerPage = () => {
                     alt={trainer.name}
                     className="w-full h-64 object-cover rounded-2xl"
                   />
-                  <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                  <div className="absolute top-4 right-4 bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
                     <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-bold text-gray-800">
+                    <span className="text-sm font-bold text-white">
                       {trainer.rating}
                     </span>
                   </div>
@@ -223,13 +222,13 @@ const TrainerPage = () => {
 
                 {/* Trainer Info */}
                 <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2 text-gray-800">
+                  <h3 className="text-2xl font-bold mb-2 text-white">
                     {trainer.name}
                   </h3>
-                  <p className="text-primary-600 font-semibold mb-3">
+                  <p className="text-blue-400 font-semibold mb-3">
                     {trainer.specialization}
                   </p>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-gray-400 text-sm leading-relaxed">
                     {trainer.bio}
                   </p>
                 </div>
@@ -237,45 +236,45 @@ const TrainerPage = () => {
                 {/* Stats */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
                   <div className="text-center">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Award className="w-6 h-6 text-primary-600" />
+                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Award className="w-6 h-6 text-blue-400" />
                     </div>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-sm font-bold text-white">
                       {trainer.experience}
                     </p>
-                    <p className="text-xs text-gray-600">Experience</p>
+                    <p className="text-xs text-gray-400">Experience</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Users className="w-6 h-6 text-primary-600" />
+                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Users className="w-6 h-6 text-blue-400" />
                     </div>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-sm font-bold text-white">
                       {trainer.clients}
                     </p>
-                    <p className="text-xs text-gray-600">Clients</p>
+                    <p className="text-xs text-gray-400">Clients</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Star className="w-6 h-6 text-primary-600" />
+                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                      <Star className="w-6 h-6 text-blue-400" />
                     </div>
-                    <p className="text-sm font-bold text-gray-800">
+                    <p className="text-sm font-bold text-white">
                       {trainer.rating}
                     </p>
-                    <p className="text-xs text-gray-600">Rating</p>
+                    <p className="text-xs text-gray-400">Rating</p>
                   </div>
                 </div>
 
                 {/* Specialties */}
                 <div className="mb-6">
-                  <h4 className="font-bold text-gray-800 mb-3 flex items-center">
-                    <Dumbbell className="w-4 h-4 mr-2 text-primary-600" />
+                  <h4 className="font-bold text-white mb-3 flex items-center">
+                    <Dumbbell className="w-4 h-4 mr-2 text-blue-400" />
                     Specialties
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {trainer.specialties.map((specialty, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium"
+                        className="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-medium"
                       >
                         {specialty}
                       </span>
@@ -285,15 +284,15 @@ const TrainerPage = () => {
 
                 {/* Certifications */}
                 <div className="mb-6">
-                  <h4 className="font-bold text-gray-800 mb-3 flex items-center">
-                    <Award className="w-4 h-4 mr-2 text-primary-600" />
+                  <h4 className="font-bold text-white mb-3 flex items-center">
+                    <Award className="w-4 h-4 mr-2 text-purple-400" />
                     Certifications
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {trainer.certifications.map((cert, idx) => (
                       <span
                         key={idx}
-                        className="px-3 py-1 bg-secondary-100 text-secondary-700 rounded-full text-xs font-medium"
+                        className="px-3 py-1 bg-purple-900 text-purple-300 rounded-full text-xs font-medium"
                       >
                         {cert}
                       </span>
@@ -303,11 +302,11 @@ const TrainerPage = () => {
 
                 {/* Availability */}
                 <div className="mb-6">
-                  <h4 className="font-bold text-gray-800 mb-2 flex items-center">
-                    <Clock className="w-4 h-4 mr-2 text-primary-600" />
+                  <h4 className="font-bold text-white mb-2 flex items-center">
+                    <Clock className="w-4 h-4 mr-2 text-green-400" />
                     Availability
                   </h4>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-gray-400">
                     {trainer.availability}
                   </p>
                 </div>
@@ -316,25 +315,25 @@ const TrainerPage = () => {
                 <div className="flex justify-center space-x-4 mb-6">
                   <a
                     href={trainer.socialLinks.instagram}
-                    className="p-2 bg-pink-100 text-pink-600 rounded-full hover:bg-pink-600 hover:text-white transition-colors duration-200"
+                    className="p-2 bg-gray-800 text-pink-400 rounded-full hover:bg-pink-600 hover:text-white transition-colors duration-200"
                   >
                     <Instagram className="w-5 h-5" />
                   </a>
                   <a
                     href={trainer.socialLinks.facebook}
-                    className="p-2 bg-blue-100 text-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                    className="p-2 bg-gray-800 text-blue-400 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-200"
                   >
                     <Facebook className="w-5 h-5" />
                   </a>
                   <a
                     href={trainer.socialLinks.twitter}
-                    className="p-2 bg-blue-100 text-blue-400 rounded-full hover:bg-blue-400 hover:text-white transition-colors duration-200"
+                    className="p-2 bg-gray-800 text-blue-300 rounded-full hover:bg-blue-400 hover:text-white transition-colors duration-200"
                   >
                     <Twitter className="w-5 h-5" />
                   </a>
                   <a
                     href={`mailto:${trainer.name.toLowerCase().replace(" ", ".")}@fitfatgym.com`}
-                    className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200"
+                    className="p-2 bg-gray-800 text-gray-400 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200"
                   >
                     <Mail className="w-5 h-5" />
                   </a>
@@ -342,10 +341,10 @@ const TrainerPage = () => {
 
                 {/* Action Buttons */}
                 <div className="flex space-x-3">
-                  <button className="flex-1 btn-primary text-sm py-3">
+                  <button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition-all duration-200 text-sm">
                     Book Session
                   </button>
-                  <button className="px-4 py-3 border-2 border-primary-600 text-primary-600 rounded-full hover:bg-primary-600 hover:text-white transition-colors duration-200">
+                  <button className="px-4 py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition-colors duration-200">
                     <Heart className="w-5 h-5" />
                   </button>
                 </div>
@@ -356,7 +355,7 @@ const TrainerPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section bg-gradient-secondary">
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-500">
         <div className="container mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -374,13 +373,13 @@ const TrainerPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/contact"
-                className="bg-white text-secondary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
+                className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 Book Consultation
               </a>
               <a
                 href="/signup"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-secondary-600 transition-colors duration-200"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-600 transition-colors duration-200"
               >
                 Join Now
               </a>

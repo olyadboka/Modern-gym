@@ -26,10 +26,8 @@ const HeroSection = () => {
           className="w-full h-full object-cover opacity-40"
         >
           <source src="homebg.mp4" type="video/mp4" />
-
           <div className="w-full h-full bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900"></div>
         </video>
-
         <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900 to-gray-900 opacity-70"></div>
       </div>
 
@@ -116,10 +114,10 @@ const FeaturesSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-gray-800">
+          <h2 className="text-4xl font-bold mb-4 text-white">
             Why Choose FitFat?
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Experience the difference with our world-class facilities and
             personalized approach to fitness.
           </p>
@@ -133,15 +131,15 @@ const FeaturesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="text-center group"
+              className="text-center group bg-gray-900 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
             >
               <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                 <feature.icon className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800">
+              <h3 className="text-xl font-bold mb-4 text-white">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-400 leading-relaxed">
                 {feature.description}
               </p>
             </motion.div>
@@ -164,10 +162,10 @@ const AboutSection = () => {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold mb-6 text-gray-800">
+            <h2 className="text-4xl font-bold mb-6 text-white">
               Your Journey to a Better You Starts Here
             </h2>
-            <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+            <p className="text-lg text-gray-400 mb-6 leading-relaxed">
               At FitFat Gym, we believe that fitness is not just about physical
               transformation, but about building confidence, discipline, and a
               healthier lifestyle. Our community of dedicated members and expert
@@ -175,22 +173,22 @@ const AboutSection = () => {
             </p>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-                <span className="text-gray-700">
+                <CheckCircle className="w-6 h-6 text-blue-500" />
+                <span className="text-gray-300">
                   Personalized workout plans
                 </span>
               </div>
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-                <span className="text-gray-700">Nutritional guidance</span>
+                <CheckCircle className="w-6 h-6 text-blue-500" />
+                <span className="text-gray-300">Nutritional guidance</span>
               </div>
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-                <span className="text-gray-700">24/7 facility access</span>
+                <CheckCircle className="w-6 h-6 text-blue-500" />
+                <span className="text-gray-300">24/7 facility access</span>
               </div>
               <div className="flex items-center space-x-3">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-                <span className="text-gray-700">Group fitness classes</span>
+                <CheckCircle className="w-6 h-6 text-blue-500" />
+                <span className="text-gray-300">Group fitness classes</span>
               </div>
             </div>
             <Link
@@ -213,14 +211,14 @@ const AboutSection = () => {
               alt="Gym Interior"
               className="rounded-3xl shadow-2xl w-full"
             />
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-xl">
+            <div className="absolute -bottom-6 -left-6 bg-gray-900 rounded-2xl p-6 shadow-xl">
               <div className="flex items-center space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                   <Award className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-800">5+ Years</h4>
-                  <p className="text-gray-600">Of Excellence</p>
+                  <h4 className="font-bold text-white">5+ Years</h4>
+                  <p className="text-gray-400">Of Excellence</p>
                 </div>
               </div>
             </div>
@@ -307,10 +305,10 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-gray-800">
+          <h2 className="text-4xl font-bold mb-4 text-white">
             What Our Members Say
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Real stories from real people who have transformed their lives at
             FitFat Gym.
           </p>
@@ -324,7 +322,7 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="bg-white rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
+              className="bg-gray-900 rounded-2xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
             >
               <div className="flex justify-center mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
@@ -334,7 +332,7 @@ const TestimonialsSection = () => {
                   />
                 ))}
               </div>
-              <p className="text-gray-600 mb-6 leading-relaxed italic">
+              <p className="text-gray-300 mb-6 leading-relaxed italic">
                 "{testimonial.content}"
               </p>
               <div className="flex items-center justify-center space-x-3">
@@ -344,10 +342,8 @@ const TestimonialsSection = () => {
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
-                  <h4 className="font-bold text-gray-800">
-                    {testimonial.name}
-                  </h4>
-                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                  <h4 className="font-bold text-white">{testimonial.name}</h4>
+                  <p className="text-gray-400 text-sm">{testimonial.role}</p>
                 </div>
               </div>
             </motion.div>
@@ -399,7 +395,7 @@ const CTASection = () => {
 // Main HomePage Component
 const HomePage = () => {
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-hidden bg-black">
       <HeroSection />
       <FeaturesSection />
       <AboutSection />

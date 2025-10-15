@@ -112,40 +112,41 @@ const MembershipPage = () => {
       case "vip":
         return "bg-yellow-500";
       default:
-        return "bg-primary-500";
+        return "bg-blue-500";
     }
   };
 
   if (loading) {
     return (
       <div className="pt-20 flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-black">
       {/* Hero Section */}
-
       <HeroSection
         title="Membership Plans"
-        subtitle="  Choose the perfect membership plan that fits your fitness goals and lifestyle."
+        subtitle="Choose the perfect membership plan that fits your fitness goals and lifestyle."
         backgroundImage="../../assets/images/bg.jpeg"
       />
 
       {/* Membership Plans */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>Choose Your Plan</h2>
-            <p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Choose Your Plan
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Flexible membership options designed to meet your fitness needs
               and budget.
             </p>
@@ -159,11 +160,13 @@ const MembershipPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className={`relative card group ${membership.isPopular ? "ring-4 ring-primary-500 scale-105" : ""}`}
+                className={`relative bg-gray-900 rounded-2xl shadow-lg p-8 group hover:shadow-xl transition-shadow duration-300 ${
+                  membership.isPopular ? "ring-4 ring-purple-500 scale-105" : ""
+                }`}
               >
                 {membership.isPopular && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-primary-500 text-white px-6 py-2 rounded-full text-sm font-bold">
+                    <span className="bg-purple-500 text-white px-6 py-2 rounded-full text-sm font-bold">
                       Most Popular
                     </span>
                   </div>
@@ -176,32 +179,32 @@ const MembershipPage = () => {
                     {getMembershipIcon(membership.name)}
                   </div>
 
-                  <h3 className="text-3xl font-bold mb-2 text-gray-800">
+                  <h3 className="text-3xl font-bold mb-2 text-white">
                     {membership.name}
                   </h3>
-                  <p className="text-gray-600 mb-6">{membership.description}</p>
+                  <p className="text-gray-400 mb-6">{membership.description}</p>
 
                   <div className="mb-6">
-                    <span className="text-5xl font-bold text-gray-800">
+                    <span className="text-5xl font-bold text-white">
                       ${membership.price}
                     </span>
-                    <span className="text-gray-600 ml-2">
+                    <span className="text-gray-400 ml-2">
                       /{membership.duration}
                     </span>
                   </div>
 
                   {membership.maxUsers && (
                     <div className="mb-4">
-                      <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                      <div className="flex items-center justify-center space-x-2 text-sm text-gray-400">
                         <Users className="w-4 h-4" />
                         <span>
                           {membership.currentUsers}/{membership.maxUsers}{" "}
                           members
                         </span>
                       </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                      <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                         <div
-                          className="bg-primary-500 h-2 rounded-full"
+                          className="bg-purple-500 h-2 rounded-full"
                           style={{
                             width: `${(membership.currentUsers / membership.maxUsers) * 100}%`,
                           }}
@@ -215,7 +218,7 @@ const MembershipPage = () => {
                   {membership.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center space-x-3">
                       <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
+                      <span className="text-gray-300">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -223,8 +226,8 @@ const MembershipPage = () => {
                 <button
                   className={`w-full py-4 rounded-full font-bold text-lg transition-all duration-200 flex items-center justify-center space-x-2 ${
                     membership.isPopular
-                      ? "bg-primary-600 text-white hover:bg-primary-700"
-                      : "bg-gray-100 text-gray-800 hover:bg-gray-200"
+                      ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700"
+                      : "bg-gray-800 text-white hover:bg-gray-700"
                   }`}
                 >
                   <span>Choose Plan</span>
@@ -237,17 +240,21 @@ const MembershipPage = () => {
       </section>
 
       {/* Membership Benefits */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>All Memberships Include</h2>
-            <p>Essential benefits that come with every membership plan.</p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              All Memberships Include
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Essential benefits that come with every membership plan.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -279,15 +286,15 @@ const MembershipPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center"
+                className="text-center bg-gray-900 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4 text-primary-600">
+                <div className="w-16 h-16 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-400">
                   {benefit.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-gray-800">
+                <h3 className="text-xl font-bold mb-2 text-white">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-600">{benefit.description}</p>
+                <p className="text-gray-400">{benefit.description}</p>
               </motion.div>
             ))}
           </div>
@@ -295,17 +302,21 @@ const MembershipPage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>Frequently Asked Questions</h2>
-            <p>Common questions about our membership plans and policies.</p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Common questions about our membership plans and policies.
+            </p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto space-y-6">
@@ -342,12 +353,12 @@ const MembershipPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card"
+                className="bg-gray-900 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
               >
-                <h4 className="text-xl font-bold mb-3 text-gray-800">
+                <h4 className="text-xl font-bold mb-3 text-white">
                   {faq.question}
                 </h4>
-                <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
               </motion.div>
             ))}
           </div>
@@ -355,7 +366,7 @@ const MembershipPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section bg-gradient-secondary">
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-500">
         <div className="container mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -373,13 +384,13 @@ const MembershipPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/signup"
-                className="bg-white text-secondary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
+                className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 Sign Up Now
               </a>
               <a
                 href="/contact"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-secondary-600 transition-colors duration-200"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-600 transition-colors duration-200"
               >
                 Contact Us
               </a>

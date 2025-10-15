@@ -17,17 +17,15 @@ import "./AboutPage.css";
 const AboutPage = () => {
   return (
     <div className="pt-20 bg-black">
-      {" "}
       {/* Hero Section */}
       <HeroSection
         title="About FitFat Gym"
-        subtitle=" We're more than just a gym - we're a community dedicated to helping you achieve your fitness goals and live your best life."
+        subtitle="We're more than just a gym - we're a community dedicated to helping you achieve your fitness goals and live your best life."
         backgroundImage="../../assets/images/bg.jpeg"
       />
+
       {/* Story Section */}
-      <section className="section bg-black text-white">
-        {" "}
-        {/* Changed to black background and white text */}
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -36,22 +34,14 @@ const AboutPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-6 text-white">
-                {" "}
-                {/* Changed to white */}
-                Our Story
-              </h2>
+              <h2 className="text-4xl font-bold mb-6 text-white">Our Story</h2>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 Founded in 2010, FitFat Gym began as a small fitness studio with
                 a big dream: to create a welcoming space where everyone,
                 regardless of their fitness level, could pursue their health and
                 wellness goals.
               </p>
               <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 What started as a passion project has grown into a thriving
                 community of over 5,000 members. Our success comes from our
                 commitment to providing personalized attention, cutting-edge
@@ -59,8 +49,6 @@ const AboutPage = () => {
                 to be their best.
               </p>
               <p className="text-lg text-gray-300 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 Today, we continue to evolve and innovate, always striving to
                 offer the best fitness experience possible while maintaining the
                 warm, community-focused atmosphere that makes FitFat Gym
@@ -78,20 +66,16 @@ const AboutPage = () => {
               <img
                 src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                 alt="Gym Interior"
-                className="rounded-3xl shadow-2xl"
+                className="rounded-3xl shadow-2xl w-full"
               />
-              <div className="absolute -bottom-6 -right-6 bg-black border border-gray-700 rounded-2xl p-6 shadow-xl">
-                {" "}
-                {/* Changed to black with border */}
+              <div className="absolute -bottom-6 -right-6 bg-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                     <Award className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white">15+ Years</h4>{" "}
-                    {/* Changed to white */}
-                    <p className="text-gray-300">Of Excellence</p>{" "}
-                    {/* Changed to gray-300 */}
+                    <h4 className="font-bold text-white">15+ Years</h4>
+                    <p className="text-gray-400">Of Excellence</p>
                   </div>
                 </div>
               </div>
@@ -99,10 +83,9 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
       {/* Mission, Vision, Values */}
-      <section className="section bg-gray-900">
-        {" "}
-        {/* Changed to gray-900 (darker gray) */}
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Mission */}
@@ -111,19 +94,15 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="card text-center bg-gray-800 border border-gray-700" // Added dark background and border
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center border border-gray-700 hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4 text-white">
-                {" "}
-                {/* Changed to white */}
                 Our Mission
               </h3>
               <p className="text-gray-300 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 To empower individuals to achieve their fitness goals through
                 personalized training, state-of-the-art equipment, and a
                 supportive community that inspires lasting lifestyle changes.
@@ -136,19 +115,13 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="card text-center bg-gray-800 border border-gray-700" // Added dark background and border
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center border border-gray-700 hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Eye className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-white">
-                {" "}
-                {/* Changed to white */}
-                Our Vision
-              </h3>
+              <h3 className="text-2xl font-bold mb-4 text-white">Our Vision</h3>
               <p className="text-gray-300 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 To be the premier fitness destination where every member feels
                 valued, motivated, and equipped to reach their full potential in
                 health, fitness, and life.
@@ -161,19 +134,13 @@ const AboutPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="card text-center bg-gray-800 border border-gray-700" // Added dark background and border
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center border border-gray-700 hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-dark rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-gray-700 to-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Heart className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-4 text-white">
-                {" "}
-                {/* Changed to white */}
-                Our Values
-              </h3>
+              <h3 className="text-2xl font-bold mb-4 text-white">Our Values</h3>
               <p className="text-gray-300 leading-relaxed">
-                {" "}
-                {/* Changed to gray-300 */}
                 Integrity, inclusivity, excellence, and community are the core
                 values that guide everything we do at FitFat Gym.
               </p>
@@ -181,23 +148,21 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
       {/* Why Choose Us */}
-      <section className="section bg-black text-white">
-        {" "}
-        {/* Changed to black background and white text */}
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2 className="text-white">Why Choose FitFat Gym?</h2>{" "}
-            {/* Added text-white */}
-            <p className="text-gray-300">
-              {" "}
-              {/* Changed to gray-300 */}
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Why Choose FitFat Gym?
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Discover what makes us the preferred choice for fitness
               enthusiasts in our community.
             </p>
@@ -248,19 +213,15 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center group bg-gray-900 p-6 rounded-2xl border border-gray-800" // Added dark background and border
+                className="text-center group bg-gray-900 rounded-2xl shadow-lg p-8 border border-gray-700 hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <item.icon className="w-10 h-10 text-white" />
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-white">
-                  {" "}
-                  {/* Changed to white */}
                   {item.title}
                 </h3>
                 <p className="text-gray-300 leading-relaxed">
-                  {" "}
-                  {/* Changed to gray-300 */}
                   {item.description}
                 </p>
               </motion.div>
@@ -268,23 +229,21 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+
       {/* Team Section */}
-      <section className="section bg-gray-900 text-white">
-        {" "}
-        {/* Changed to gray-900 and white text */}
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2 className="text-white">Meet Our Leadership Team</h2>{" "}
-            {/* Added text-white */}
-            <p className="text-gray-300">
-              {" "}
-              {/* Changed to gray-300 */}
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Meet Our Leadership Team
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               The passionate professionals who make FitFat Gym an exceptional
               place to train.
             </p>
@@ -320,7 +279,7 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card text-center bg-gray-800 border border-gray-700" // Added dark background and border
+                className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center border border-gray-700 hover:shadow-xl transition-shadow duration-300"
               >
                 <img
                   src={member.image}
@@ -328,24 +287,20 @@ const AboutPage = () => {
                   className="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
                 />
                 <h3 className="text-2xl font-bold mb-2 text-white">
-                  {" "}
-                  {/* Changed to white */}
                   {member.name}
                 </h3>
-                <p className="text-primary-400 font-semibold mb-4">
-                  {" "}
-                  {/* Changed to primary-400 for better contrast */}
+                <p className="text-blue-400 font-semibold mb-4">
                   {member.role}
                 </p>
-                <p className="text-gray-300 leading-relaxed">{member.bio}</p>{" "}
-                {/* Changed to gray-300 */}
+                <p className="text-gray-300 leading-relaxed">{member.bio}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
+
       {/* Stats Section */}
-      <section className="section bg-gradient-primary text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-500 to-purple-600">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -360,19 +315,20 @@ const AboutPage = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center"
+                className="text-center text-white"
               >
                 <h3 className="text-4xl md:text-5xl font-bold mb-2">
                   {stat.number}
                 </h3>
-                <p className="text-lg text-primary-100">{stat.label}</p>
+                <p className="text-lg text-blue-100">{stat.label}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
+
       {/* CTA Section */}
-      <section className="section bg-gradient-secondary">
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-500">
         <div className="container mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -390,13 +346,13 @@ const AboutPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/signup"
-                className="bg-white text-secondary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
+                className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 Join Now
               </a>
               <a
                 href="/contact"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-secondary-600 transition-colors duration-200"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-600 transition-colors duration-200"
               >
                 Contact Us
               </a>

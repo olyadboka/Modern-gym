@@ -38,14 +38,14 @@ const ContactPage = () => {
   return (
     <div className="pt-20 bg-black">
       {/* Hero Section */}
-
       <HeroSection
         title="Contact Us"
         subtitle=" Get in touch with our team. We're here to help you start your fitness journey and answer any questions you may have."
         backgroundImage="../../assets/images/bg.jpeg"
       />
+
       {/* Contact Information */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Contact Info Cards */}
@@ -54,13 +54,13 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
-              className="card text-center"
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <MapPin className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800">Visit Us</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-4 text-white">Visit Us</h3>
+              <p className="text-gray-300">
                 123 Fitness Street
                 <br />
                 Gym City, GC 12345
@@ -74,13 +74,13 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               viewport={{ once: true }}
-              className="card text-center bg-black-100"
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-secondary rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-purple-600 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Phone className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800">Call Us</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-4 text-white">Call Us</h3>
+              <p className="text-gray-300">
                 Main: +1 (555) 123-4567
                 <br />
                 Support: +1 (555) 123-4568
@@ -94,13 +94,13 @@ const ContactPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
-              className="card text-center"
+              className="bg-gray-900 rounded-2xl shadow-lg p-8 text-center hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="w-16 h-16 bg-gradient-dark rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-16 h-16 bg-gradient-to-r from-gray-700 to-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Mail className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-4 text-gray-800">Email Us</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-bold mb-4 text-white">Email Us</h3>
+              <p className="text-gray-300">
                 info@fitfatgym.com
                 <br />
                 support@fitfatgym.com
@@ -113,7 +113,7 @@ const ContactPage = () => {
       </section>
 
       {/* Contact Form and Map */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
@@ -123,8 +123,8 @@ const ContactPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <div className="card">
-                <h2 className="text-3xl font-bold mb-6 text-gray-800">
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-8">
+                <h2 className="text-3xl font-bold mb-6 text-white">
                   Send us a Message
                 </h2>
 
@@ -132,10 +132,10 @@ const ContactPage = () => {
                   <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-6 p-4 bg-green-100 border border-green-400 rounded-lg flex items-center space-x-2"
+                    className="mb-6 p-4 bg-green-900 border border-green-600 rounded-lg flex items-center space-x-2"
                   >
-                    <CheckCircle className="w-5 h-5 text-green-600" />
-                    <span className="text-green-800">
+                    <CheckCircle className="w-5 h-5 text-green-400" />
+                    <span className="text-green-300">
                       Thank you! Your message has been sent successfully.
                     </span>
                   </motion.div>
@@ -146,7 +146,7 @@ const ContactPage = () => {
                     <div>
                       <label
                         htmlFor="firstName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="block text-sm font-medium text-gray-300 mb-2"
                       >
                         First Name *
                       </label>
@@ -156,11 +156,11 @@ const ContactPage = () => {
                         {...register("firstName", {
                           required: "First name is required",
                         })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
                         placeholder="Your first name"
                       />
                       {errors.firstName && (
-                        <p className="mt-1 text-sm text-red-600">
+                        <p className="mt-1 text-sm text-red-400">
                           {errors.firstName.message}
                         </p>
                       )}
@@ -169,7 +169,7 @@ const ContactPage = () => {
                     <div>
                       <label
                         htmlFor="lastName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
+                        className="block text-sm font-medium text-gray-300 mb-2"
                       >
                         Last Name *
                       </label>
@@ -179,11 +179,11 @@ const ContactPage = () => {
                         {...register("lastName", {
                           required: "Last name is required",
                         })}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                        className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
                         placeholder="Your last name"
                       />
                       {errors.lastName && (
-                        <p className="mt-1 text-sm text-red-600">
+                        <p className="mt-1 text-sm text-red-400">
                           {errors.lastName.message}
                         </p>
                       )}
@@ -193,7 +193,7 @@ const ContactPage = () => {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-gray-300 mb-2"
                     >
                       Email Address *
                     </label>
@@ -207,11 +207,11 @@ const ContactPage = () => {
                           message: "Invalid email address",
                         },
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
                       placeholder="your.email@example.com"
                     />
                     {errors.email && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.email.message}
                       </p>
                     )}
@@ -220,7 +220,7 @@ const ContactPage = () => {
                   <div>
                     <label
                       htmlFor="phone"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-gray-300 mb-2"
                     >
                       Phone Number
                     </label>
@@ -228,7 +228,7 @@ const ContactPage = () => {
                       type="tel"
                       id="phone"
                       {...register("phone")}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
                       placeholder="+1 (555) 123-4567"
                     />
                   </div>
@@ -236,7 +236,7 @@ const ContactPage = () => {
                   <div>
                     <label
                       htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-gray-300 mb-2"
                     >
                       Subject *
                     </label>
@@ -245,18 +245,32 @@ const ContactPage = () => {
                       {...register("subject", {
                         required: "Please select a subject",
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
                     >
-                      <option value="">Select a subject</option>
-                      <option value="membership">Membership Inquiry</option>
-                      <option value="training">Personal Training</option>
-                      <option value="classes">Group Classes</option>
-                      <option value="equipment">Equipment Question</option>
-                      <option value="billing">Billing Support</option>
-                      <option value="other">Other</option>
+                      <option value="" className="bg-gray-800">
+                        Select a subject
+                      </option>
+                      <option value="membership" className="bg-gray-800">
+                        Membership Inquiry
+                      </option>
+                      <option value="training" className="bg-gray-800">
+                        Personal Training
+                      </option>
+                      <option value="classes" className="bg-gray-800">
+                        Group Classes
+                      </option>
+                      <option value="equipment" className="bg-gray-800">
+                        Equipment Question
+                      </option>
+                      <option value="billing" className="bg-gray-800">
+                        Billing Support
+                      </option>
+                      <option value="other" className="bg-gray-800">
+                        Other
+                      </option>
                     </select>
                     {errors.subject && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.subject.message}
                       </p>
                     )}
@@ -265,7 +279,7 @@ const ContactPage = () => {
                   <div>
                     <label
                       htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-gray-300 mb-2"
                     >
                       Message *
                     </label>
@@ -275,11 +289,11 @@ const ContactPage = () => {
                       {...register("message", {
                         required: "Message is required",
                       })}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-colors duration-200 resize-none"
+                      className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 resize-none text-white placeholder-gray-400"
                       placeholder="Tell us how we can help you..."
                     />
                     {errors.message && (
-                      <p className="mt-1 text-sm text-red-600">
+                      <p className="mt-1 text-sm text-red-400">
                         {errors.message.message}
                       </p>
                     )}
@@ -287,7 +301,7 @@ const ContactPage = () => {
 
                   <button
                     type="submit"
-                    className="w-full btn-primary flex items-center justify-center space-x-2"
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
                   >
                     <Send className="w-5 h-5" />
                     <span>Send Message</span>
@@ -305,19 +319,19 @@ const ContactPage = () => {
               className="space-y-8"
             >
               {/* Map */}
-              <div className="card p-0 overflow-hidden">
-                <div className="h-64 bg-gray-200 flex items-center justify-center">
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-0 overflow-hidden">
+                <div className="h-64 bg-gray-800 flex items-center justify-center">
                   <div className="text-center">
                     <MapPin className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-600">Interactive Map Coming Soon</p>
+                    <p className="text-gray-400">Interactive Map Coming Soon</p>
                   </div>
                 </div>
               </div>
 
               {/* Operating Hours */}
-              <div className="card">
-                <h3 className="text-2xl font-bold mb-6 text-gray-800 flex items-center">
-                  <Clock className="w-6 h-6 mr-3 text-primary-600" />
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold mb-6 text-white flex items-center">
+                  <Clock className="w-6 h-6 mr-3 text-blue-500" />
                   Operating Hours
                 </h3>
                 <div className="space-y-3">
@@ -328,20 +342,20 @@ const ContactPage = () => {
                   ].map((schedule, index) => (
                     <div
                       key={index}
-                      className="flex justify-between items-center py-2 border-b border-gray-200 last:border-b-0"
+                      className="flex justify-between items-center py-2 border-b border-gray-700 last:border-b-0"
                     >
-                      <span className="font-medium text-gray-700">
+                      <span className="font-medium text-gray-300">
                         {schedule.day}
                       </span>
-                      <span className="text-gray-600">{schedule.hours}</span>
+                      <span className="text-gray-400">{schedule.hours}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* Social Media */}
-              <div className="card">
-                <h3 className="text-2xl font-bold mb-6 text-gray-800">
+              <div className="bg-gray-900 rounded-2xl shadow-lg p-8">
+                <h3 className="text-2xl font-bold mb-6 text-white">
                   Follow Us
                 </h3>
                 <div className="flex space-x-4">
@@ -371,17 +385,21 @@ const ContactPage = () => {
       </section>
 
       {/* FAQ Section */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>Frequently Asked Questions</h2>
-            <p>Quick answers to common questions about our gym and services.</p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Quick answers to common questions about our gym and services.
+            </p>
           </motion.div>
 
           <div className="max-w-4xl mx-auto space-y-6">
@@ -423,12 +441,12 @@ const ContactPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card"
+                className="bg-gray-900 rounded-2xl shadow-lg p-8 hover:shadow-xl transition-shadow duration-300"
               >
-                <h4 className="text-xl font-bold mb-3 text-gray-800">
+                <h4 className="text-xl font-bold mb-3 text-white">
                   {faq.question}
                 </h4>
-                <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                <p className="text-gray-300 leading-relaxed">{faq.answer}</p>
               </motion.div>
             ))}
           </div>

@@ -94,33 +94,35 @@ const SchedulePage = () => {
 
   if (loading) {
     return (
-      <div className="pt-20 flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="pt-20 flex items-center justify-center h-64 bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-black">
       {/* Hero Section */}
       <HeroSection
         title="Class Schedule"
-        subtitle=" Find the perfect class that fits your schedule and fitness goals."
+        subtitle="Find the perfect class that fits your schedule and fitness goals."
         backgroundImage="../../assets/images/bg.jpeg"
       />
 
       {/* Filters */}
-      <section className="py-12 bg-black border-b">
+      <section className="py-12 bg-black border-b border-gray-800">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4">
             <select
               value={selectedDay}
               onChange={(e) => setSelectedDay(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white transition-colors duration-200"
             >
-              <option value="all">All Days</option>
+              <option value="all" className="bg-gray-800">
+                All Days
+              </option>
               {days.map((day) => (
-                <option key={day} value={day}>
+                <option key={day} value={day} className="bg-gray-800">
                   {day}
                 </option>
               ))}
@@ -128,11 +130,13 @@ const SchedulePage = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+              className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-white transition-colors duration-200"
             >
-              <option value="all">All Categories</option>
+              <option value="all" className="bg-gray-800">
+                All Categories
+              </option>
               {categories.map((category) => (
-                <option key={category} value={category}>
+                <option key={category} value={category} className="bg-gray-800">
                   {category}
                 </option>
               ))}
@@ -142,72 +146,85 @@ const SchedulePage = () => {
       </section>
 
       {/* Schedule Grid */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredSchedules.map((schedule, index) => (
-              <motion.div
-                key={schedule._id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-gray-800">
-                    {schedule.title}
-                  </h3>
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      schedule.difficulty === "Beginner"
-                        ? "bg-green-100 text-green-800"
-                        : schedule.difficulty === "Intermediate"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {schedule.difficulty}
-                  </span>
-                </div>
-
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center space-x-3">
-                    <Calendar className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">{schedule.dayOfWeek}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Clock className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">
-                      {schedule.startTime} - {schedule.endTime}
+          {filteredSchedules.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">
+                No classes found matching your filters.
+              </p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredSchedules.map((schedule, index) => (
+                <motion.div
+                  key={schedule._id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-gray-900 rounded-2xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-xl font-bold text-white">
+                      {schedule.title}
+                    </h3>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        schedule.difficulty === "All Levels" ||
+                        schedule.difficulty === "Beginner"
+                          ? "bg-green-900 text-green-300"
+                          : schedule.difficulty === "Intermediate"
+                            ? "bg-yellow-900 text-yellow-300"
+                            : "bg-red-900 text-red-300"
+                      }`}
+                    >
+                      {schedule.difficulty}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">{schedule.room}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <Users className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">
-                      {schedule.currentParticipants}/{schedule.maxParticipants}{" "}
-                      participants
-                    </span>
-                  </div>
-                </div>
 
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-2">Trainer</p>
-                  <p className="font-medium text-gray-800">
-                    {schedule.trainer.name}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {schedule.trainer.specialization}
-                  </p>
-                </div>
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-300">
+                        {schedule.dayOfWeek}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Clock className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-300">
+                        {schedule.startTime} - {schedule.endTime}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <MapPin className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-300">{schedule.room}</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Users className="w-5 h-5 text-gray-400" />
+                      <span className="text-gray-300">
+                        {schedule.currentParticipants}/
+                        {schedule.maxParticipants} participants
+                      </span>
+                    </div>
+                  </div>
 
-                <button className="btn-primary w-full">Book Class</button>
-              </motion.div>
-            ))}
-          </div>
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-400 mb-2">Trainer</p>
+                    <p className="font-medium text-white">
+                      {schedule.trainer.name}
+                    </p>
+                    <p className="text-sm text-gray-400">
+                      {schedule.trainer.specialization}
+                    </p>
+                  </div>
+
+                  <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200">
+                    Book Class
+                  </button>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>

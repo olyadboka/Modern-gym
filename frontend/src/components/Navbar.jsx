@@ -33,7 +33,7 @@ const Navbar = () => {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-transparent"
+        isScrolled ? "bg-white/95 backdrop-blur-md shadow-lg" : "bg-black"
       }`}
     >
       <div className="container mx-auto px-4">
@@ -41,9 +41,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-primary rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-xl">F</span>
+              <img src="logo.png" alt="logo" />
             </div>
-            <span className="text-2xl font-bold text-gray-800">FitFat</span>
+            <span className="text-2xl font-bold text-primary-600">FitFat</span>
           </Link>
 
           {/* Desktop Navigation */}

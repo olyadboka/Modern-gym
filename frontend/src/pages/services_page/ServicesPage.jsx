@@ -130,27 +130,28 @@ const ServicesPage = () => {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 bg-black">
       {/* Hero Section */}
-
       <HeroSection
         title="Our Services"
-        subtitle="  Discover our comprehensive range of fitness services designed to
-              help you achieve your health and wellness goals."
+        subtitle="Discover our comprehensive range of fitness services designed to help you achieve your health and wellness goals."
         backgroundImage="../../assets/images/bg.jpeg"
       />
+
       {/* Main Services */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>Fitness Services</h2>
-            <p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Fitness Services
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Professional fitness services tailored to meet your individual
               needs and goals.
             </p>
@@ -164,33 +165,33 @@ const ServicesPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="card group"
+                className="bg-gray-900 rounded-2xl shadow-lg p-8 group hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                   <service.icon className="w-8 h-8 text-white" />
                 </div>
 
-                <h3 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+                <h3 className="text-2xl font-bold mb-4 text-white text-center">
                   {service.title}
                 </h3>
-                <p className="text-gray-600 mb-6 leading-relaxed text-center">
+                <p className="text-gray-400 mb-6 leading-relaxed text-center">
                   {service.description}
                 </p>
 
                 <div className="space-y-3 mb-6">
                   {service.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center space-x-3">
-                      <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
+                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <span className="text-gray-300">{feature}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="text-center">
-                  <p className="text-lg font-bold text-primary-600 mb-4">
+                  <p className="text-lg font-bold text-blue-400 mb-4">
                     {service.price}
                   </p>
-                  <button className="btn-primary w-full flex items-center justify-center space-x-2">
+                  <button className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
                     <span>Learn More</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
@@ -202,17 +203,21 @@ const ServicesPage = () => {
       </section>
 
       {/* Additional Services */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="section-title"
+            className="text-center mb-16"
           >
-            <h2>Additional Amenities</h2>
-            <p>Extra services and amenities to enhance your gym experience.</p>
+            <h2 className="text-4xl font-bold mb-4 text-white">
+              Additional Amenities
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Extra services and amenities to enhance your gym experience.
+            </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -223,13 +228,13 @@ const ServicesPage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300"
+                className="bg-gray-900 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
                 <div className="text-4xl mb-4">{service.icon}</div>
-                <h3 className="text-xl font-bold mb-3 text-gray-800">
+                <h3 className="text-xl font-bold mb-3 text-white">
                   {service.title}
                 </h3>
-                <p className="text-gray-600">{service.description}</p>
+                <p className="text-gray-400">{service.description}</p>
               </motion.div>
             ))}
           </div>
@@ -237,7 +242,7 @@ const ServicesPage = () => {
       </section>
 
       {/* Why Choose Our Services */}
-      <section className="section bg-black">
+      <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -246,10 +251,10 @@ const ServicesPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold mb-6 text-gray-800">
+              <h2 className="text-4xl font-bold mb-6 text-white">
                 Why Choose Our Services?
               </h2>
-              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+              <p className="text-lg text-gray-400 mb-6 leading-relaxed">
                 Our comprehensive fitness services are designed to provide you
                 with everything you need to achieve your health and wellness
                 goals. From personalized training to group classes, we offer a
@@ -257,34 +262,34 @@ const ServicesPage = () => {
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <Star className="w-5 h-5 text-primary-600" />
+                  <div className="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center">
+                    <Star className="w-5 h-5 text-blue-400" />
                   </div>
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Certified and experienced trainers
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <Award className="w-5 h-5 text-primary-600" />
+                  <div className="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center">
+                    <Award className="w-5 h-5 text-blue-400" />
                   </div>
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     State-of-the-art equipment
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <Users className="w-5 h-5 text-primary-600" />
+                  <div className="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center">
+                    <Users className="w-5 h-5 text-blue-400" />
                   </div>
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Supportive community environment
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-primary-600" />
+                  <div className="w-8 h-8 bg-blue-900 rounded-full flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-blue-400" />
                   </div>
-                  <span className="text-gray-700">
+                  <span className="text-gray-300">
                     Flexible scheduling options
                   </span>
                 </div>
@@ -301,16 +306,16 @@ const ServicesPage = () => {
               <img
                 src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
                 alt="Gym Services"
-                className="rounded-3xl shadow-2xl"
+                className="rounded-3xl shadow-2xl w-full"
               />
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-xl">
+              <div className="absolute -bottom-6 -left-6 bg-gray-900 rounded-2xl p-6 shadow-xl">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-primary rounded-full flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                     <Dumbbell className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-gray-800">50+ Classes</h4>
-                    <p className="text-gray-600">Weekly</p>
+                    <h4 className="font-bold text-white">50+ Classes</h4>
+                    <p className="text-gray-400">Weekly</p>
                   </div>
                 </div>
               </div>
@@ -320,7 +325,7 @@ const ServicesPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="section bg-gradient-secondary">
+      <section className="py-20 bg-gradient-to-r from-purple-600 to-blue-500">
         <div className="container mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -338,13 +343,13 @@ const ServicesPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="/membership"
-                className="bg-white text-secondary-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
+                className="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 View Memberships
               </a>
               <a
                 href="/contact"
-                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-secondary-600 transition-colors duration-200"
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-purple-600 transition-colors duration-200"
               >
                 Contact Us
               </a>
