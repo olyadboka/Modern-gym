@@ -4,10 +4,20 @@ import { validationResult } from "express-validator";
 import User from "../models/user_model.js";
 
 // Generate JWT Token
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET || "your-secret-key", {
-    expiresIn: "7d",
-  });
+const generateToken = (userId, email, role) => {
+  return jwt.sign(
+    {
+      userId,
+      email,
+      role,
+    },
+    process.env.JWT_SECRET ||
+      process.env.JWT_TOKEN_SECRET ||
+      "your-fallback-secret-key",
+    {
+      expiresIn: "7d",
+    }
+  );
 };
 
 // Register User
@@ -17,6 +27,7 @@ export const registerUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
+        success: false,
         message: "Validation failed",
         errors: errors.array(),
       });
@@ -27,9 +38,10 @@ export const registerUser = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User already exists with this email" });
+      return res.status(400).json({
+        success: false,
+        message: "User already exists with this email",
+      });
     }
 
     // Hash password
@@ -44,12 +56,14 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
       joinDate: new Date(),
       role: "user",
-      membershipType: membershipType,
+      membershipType: membershipType || "basic",
+      isActive: true,
     });
 
     await user.save();
 
-    const token = generateToken(user._id);
+    // Generate token with user info
+    const token = generateToken(user._id, user.email, user.role);
 
     // Remove password from response
     const userResponse = {
@@ -63,14 +77,26 @@ export const registerUser = async (req, res) => {
       isActive: user.isActive,
     };
 
+    // Set HTTP-only cookie for registration as well
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(201).json({
+      success: true,
       message: "User registered successfully",
       user: userResponse,
-      token,
+      token, // Still include token in response for flexibility
     });
   } catch (error) {
     console.error("Registration error:", error);
-    res.status(500).json({ message: "Server error during registration" });
+    res.status(500).json({
+      success: false,
+      message: "Server error during registration",
+    });
   }
 };
 
@@ -81,6 +107,7 @@ export const loginUser = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
+        success: false,
         message: "Validation failed",
         errors: errors.array(),
       });
@@ -88,29 +115,33 @@ export const loginUser = async (req, res) => {
 
     const { email, password } = req.body;
 
-    // Find user by email
-    const user = await User.findOne({ email });
+    // Find user by email and include password field
+    const user = await User.findOne({ email }).select("+password");
     if (!user) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
     // Check if user is active
     if (!user.isActive) {
-      return res
-        .status(401)
-        .json({ message: "Account is deactivated. Please contact support." });
+      return res.status(401).json({
+        success: false,
+        message: "Account is deactivated. Please contact support.",
+      });
     }
 
     // Verify password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid email or password",
+      });
     }
 
-    // Generate token
-    const token = generateToken(user._id);
-
-    // Remove password from response
+    // Prepare user response without password
     const userResponse = {
       _id: user._id,
       name: user.name,
@@ -124,14 +155,52 @@ export const loginUser = async (req, res) => {
       profileImage: user.profileImage,
     };
 
+    // Generate JWT token
+    const token = generateToken(user._id, user.email, user.role);
+
+    // Set HTTP-only cookie
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
     res.status(200).json({
+      success: true,
       message: "Login successful",
       user: userResponse,
-      token,
+      token, // Still sending token in response for frontend storage if needed
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server error during login" });
+    res.status(500).json({
+      success: false,
+      message: "Server error during login",
+    });
+  }
+};
+
+// Logout User
+export const logoutUser = async (req, res) => {
+  try {
+    // Clear the token cookie
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    console.error("Logout error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error during logout",
+    });
   }
 };
 
@@ -141,26 +210,36 @@ export const getUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id).select("-password");
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    res.status(200).json({ user });
+    res.status(200).json({
+      success: true,
+      user,
+    });
   } catch (error) {
     console.error("Get profile error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
 // Update User Profile
 export const updateUserProfile = async (req, res) => {
   try {
-    const { name, phone, membershipType } = req.body;
+    const { name, phone, membershipType, dateOfBirth } = req.body;
     const userId = req.user._id;
 
     const updateData = {};
     if (name) updateData.name = name;
     if (phone) updateData.phone = phone;
     if (membershipType) updateData.membershipType = membershipType;
+    if (dateOfBirth) updateData.dateOfBirth = dateOfBirth;
 
     const user = await User.findByIdAndUpdate(userId, updateData, {
       new: true,
@@ -168,16 +247,23 @@ export const updateUserProfile = async (req, res) => {
     }).select("-password");
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     res.status(200).json({
+      success: true,
       message: "Profile updated successfully",
       user,
     });
   } catch (error) {
     console.error("Update profile error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -197,6 +283,7 @@ export const getAllUsers = async (req, res) => {
     const total = await User.countDocuments();
 
     res.status(200).json({
+      success: true,
       users,
       pagination: {
         current: page,
@@ -206,7 +293,10 @@ export const getAllUsers = async (req, res) => {
     });
   } catch (error) {
     console.error("Get users error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -223,16 +313,23 @@ export const updateUserStatus = async (req, res) => {
     ).select("-password");
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
     res.status(200).json({
+      success: true,
       message: "User status updated successfully",
       user,
     });
   } catch (error) {
     console.error("Update user status error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 
@@ -244,12 +341,46 @@ export const deleteUser = async (req, res) => {
     const user = await User.findByIdAndDelete(userId);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
     }
 
-    res.status(200).json({ message: "User deleted successfully" });
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+    });
   } catch (error) {
     console.error("Delete user error:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+// Get Current User (from token)
+export const getCurrentUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.error("Get current user error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };

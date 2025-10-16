@@ -19,7 +19,7 @@ const router = express.Router();
 
 // Public routes
 router.post("/register", registerUser);
-router.post("/login", validateUserLogin, loginUser);
+router.post("/login", loginUser);
 
 // Protected routes
 router.use(authenticateToken); // All routes below require authentication

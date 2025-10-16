@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -15,14 +19,60 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setError("");
+
     try {
-      // Here you would typically send the data to your backend
-      console.log("Login data:", data);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-      // Handle successful login (redirect, store token, etc.)
+      // Create FormData object
+      const formData = new FormData();
+
+      // Append form data to FormData object
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+
+      console.log("Login data:", {
+        email: data.email,
+        password: data.password,
+      });
+
+      const response = await axios.post(
+        "http:localhost:3000/api/users/login",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        console.log("Login successful:", response.data);
+
+        if (response.data.token) {
+          cookieStore.setItem("token", response.data.token);
+          cookieStore.setItem("user", JSON.stringify(response.data.user));
+        }
+        navigate("/");
+      } else {
+        throw new Error(response.data?.message || "Login failed");
+      }
     } catch (error) {
       console.error("Login error:", error);
+
+      if (error.code === "ERR_NETWORK") {
+        setError("Cannot connect to server. Please try again later.");
+      } else if (error.response) {
+        // Server responded with error status
+        const errorMessage =
+          error.response.data?.message ||
+          (error.response.data?.errors
+            ? error.response.data.errors[0]?.msg
+            : "Invalid email or password");
+        setError(errorMessage);
+      } else if (error.request) {
+        setError("No response from server. Please check your connection.");
+      } else {
+        setError(error.message || "Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +98,34 @@ const LoginPage = () => {
             Sign in to your FitFat Gym account
           </p>
         </motion.div>
+
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg"
+          >
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm">{error}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Login Form */}
         <motion.div
@@ -154,12 +232,12 @@ const LoginPage = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  to="/forgot-password"
                   className="font-medium text-blue-400 hover:text-blue-300 transition-colors duration-200"
                 >
                   Forgot your password?
-                </a>
+                </Link>
               </div>
             </div>
 
