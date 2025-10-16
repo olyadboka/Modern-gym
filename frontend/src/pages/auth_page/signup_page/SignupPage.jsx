@@ -35,54 +35,61 @@ const SignupPage = () => {
     setError("");
 
     try {
-      // Prepare the data for backend
-
+      // Prepare the data for backend matching the backend expectations
       const userData = {
         name: data.fullName,
         email: data.email,
         phone: data.phone,
         password: data.password,
-        membershipType: "basic",
+        membershipType: "basic", // Default membership type, you can add a dropdown for this
       };
 
-      const formData = new FormData();
-
-      formData.append({
-        name: data.fullName,
-      });
-      formData.append({
-        email: data.email,
-      });
-      formData.append({
-        phone: data.phone,
-      });
-      formData.append({
-        password: data.password,
-      });
-      console.log("Sending signup data:", formData);
+      console.log("Sending signup data:", userData);
 
       // Send data to backend API
       const response = await axios.post(
         "http://localhost:3000/api/users/register",
+        userData,
         {
           headers: {
             "Content-Type": "application/json",
           },
-          body: formData,
         }
       );
 
-      const result = await response.json();
+      // Axios automatically parses JSON, so we can access response.data directly
+      if (response.status === 201) {
+        console.log("Signup successful:", response.data);
 
-      if (!response.ok) {
-        throw new Error(result.message || "Signup failed");
+        // Store token in localStorage or context for future requests
+        if (response.data.token) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+        }
+
+        setIsSubmitted(true);
+      } else {
+        throw new Error(response.data?.message || "Signup failed");
       }
-
-      console.log("Signup successful:", result);
-      setIsSubmitted(true);
     } catch (error) {
       console.error("Signup error:", error);
-      setError(error.message || "Something went wrong. Please try again.");
+
+      // Handle axios error response
+      if (error.response) {
+        // Server responded with error status
+        const errorMessage =
+          error.response.data?.message ||
+          (error.response.data?.errors
+            ? error.response.data.errors[0]?.msg
+            : "Something went wrong. Please try again.");
+        setError(errorMessage);
+      } else if (error.request) {
+        // Request was made but no response received
+        setError("No response from server. Please try again.");
+      } else {
+        // Other errors
+        setError(error.message || "Something went wrong. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
