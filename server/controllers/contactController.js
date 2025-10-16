@@ -27,6 +27,7 @@ export const submitContactForm = async (req, res) => {
     await contact.save();
 
     res.status(201).json({
+      success: true,
       message: 'Contact form submitted successfully. We will get back to you soon!',
       contactId: contact._id
     });
@@ -57,6 +58,7 @@ export const getAllContacts = async (req, res) => {
     const total = await Contact.countDocuments(query);
 
     res.status(200).json({
+      success: true,
       contacts,
       pagination: {
         current: page,

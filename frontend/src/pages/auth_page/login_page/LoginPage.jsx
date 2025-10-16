@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { useAuth } from "../../../contexts/AuthContext";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const {
     register,
@@ -22,57 +23,19 @@ const LoginPage = () => {
     setError("");
 
     try {
-      // Create FormData object
-      const formData = new FormData();
-
-      // Append form data to FormData object
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-
-      console.log("Login data:", {
+      const result = await login({
         email: data.email,
         password: data.password,
       });
 
-      const response = await axios.post(
-        "http:localhost:3000/api/users/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        console.log("Login successful:", response.data);
-
-        if (response.data.token) {
-          cookieStore.setItem("token", response.data.token);
-          cookieStore.setItem("user", JSON.stringify(response.data.user));
-        }
-        navigate("/");
+      if (result.success) {
+        navigate("/dashboard");
       } else {
-        throw new Error(response.data?.message || "Login failed");
+        setError(result.message);
       }
     } catch (error) {
       console.error("Login error:", error);
-
-      if (error.code === "ERR_NETWORK") {
-        setError("Cannot connect to server. Please try again later.");
-      } else if (error.response) {
-        // Server responded with error status
-        const errorMessage =
-          error.response.data?.message ||
-          (error.response.data?.errors
-            ? error.response.data.errors[0]?.msg
-            : "Invalid email or password");
-        setError(errorMessage);
-      } else if (error.request) {
-        setError("No response from server. Please check your connection.");
-      } else {
-        setError(error.message || "Something went wrong. Please try again.");
-      }
+      setError("Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }

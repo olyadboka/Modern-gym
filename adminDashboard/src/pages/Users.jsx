@@ -11,6 +11,7 @@ import {
   Phone,
   Calendar,
 } from "lucide-react";
+import { userAPI } from "../utils/api";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -19,59 +20,23 @@ const Users = () => {
   const [filterRole, setFilterRole] = useState("all");
   const [filterMembership, setFilterMembership] = useState("all");
 
-  // Mock data - in production, this would come from your API
   useEffect(() => {
-    const fetchUsers = async () => {
-      // Simulate API call
-      setTimeout(() => {
-        setUsers([
-          {
-            _id: "1",
-            name: "John Doe",
-            email: "john@example.com",
-            phone: "+1 (555) 123-4567",
-            role: "user",
-            membershipType: "premium",
-            joinDate: "2024-01-15",
-            isActive: true,
-          },
-          {
-            _id: "2",
-            name: "Sarah Smith",
-            email: "sarah@example.com",
-            phone: "+1 (555) 234-5678",
-            role: "user",
-            membershipType: "vip",
-            joinDate: "2024-02-20",
-            isActive: true,
-          },
-          {
-            _id: "3",
-            name: "Mike Johnson",
-            email: "mike@example.com",
-            phone: "+1 (555) 345-6789",
-            role: "user",
-            membershipType: "basic",
-            joinDate: "2024-03-10",
-            isActive: false,
-          },
-          {
-            _id: "4",
-            name: "Emily Davis",
-            email: "emily@example.com",
-            phone: "+1 (555) 456-7890",
-            role: "coach",
-            membershipType: "premium",
-            joinDate: "2023-12-05",
-            isActive: true,
-          },
-        ]);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchUsers();
   }, []);
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true);
+      const response = await userAPI.getAllUsers();
+      if (response.data.success) {
+        setUsers(response.data.users || []);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
@@ -84,17 +49,34 @@ const Users = () => {
     return matchesSearch && matchesRole && matchesMembership;
   });
 
-  const handleToggleStatus = (userId) => {
-    setUsers(
-      users.map((user) =>
-        user._id === userId ? { ...user, isActive: !user.isActive } : user
-      )
-    );
+  const handleToggleStatus = async (userId) => {
+    try {
+      const user = users.find((u) => u._id === userId);
+      const newStatus = !user.isActive;
+
+      const response = await userAPI.updateUserStatus(userId, newStatus);
+      if (response.data.success) {
+        setUsers(
+          users.map((u) =>
+            u._id === userId ? { ...u, isActive: newStatus } : u
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating user status:", error);
+    }
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = async (userId) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
-      setUsers(users.filter((user) => user._id !== userId));
+      try {
+        const response = await userAPI.deleteUser(userId);
+        if (response.data.success) {
+          setUsers(users.filter((user) => user._id !== userId));
+        }
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
     }
   };
 

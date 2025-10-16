@@ -12,6 +12,7 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import { contactAPI } from "../utils/api";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -21,63 +22,23 @@ const Contacts = () => {
   const [selectedContact, setSelectedContact] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // Mock data - in production, this would come from your API
   useEffect(() => {
-    const fetchContacts = async () => {
-      // Simulate API call
-      setTimeout(() => {
-        setContacts([
-          {
-            _id: "1",
-            name: "John Smith",
-            email: "john@example.com",
-            phone: "+1 (555) 123-4567",
-            subject: "Membership Inquiry",
-            message:
-              "I am interested in joining your gym. Can you please provide information about membership plans and pricing?",
-            status: "new",
-            createdAt: "2024-01-15T10:30:00Z",
-          },
-          {
-            _id: "2",
-            name: "Sarah Johnson",
-            email: "sarah@example.com",
-            phone: "+1 (555) 234-5678",
-            subject: "Personal Training",
-            message:
-              "I would like to book a consultation with one of your personal trainers. What are the available time slots?",
-            status: "read",
-            createdAt: "2024-01-14T14:20:00Z",
-          },
-          {
-            _id: "3",
-            name: "Mike Davis",
-            email: "mike@example.com",
-            phone: "+1 (555) 345-6789",
-            subject: "Equipment Question",
-            message:
-              "Do you have Olympic lifting platforms? I am training for a powerlifting competition.",
-            status: "replied",
-            createdAt: "2024-01-13T09:15:00Z",
-          },
-          {
-            _id: "4",
-            name: "Emily Wilson",
-            email: "emily@example.com",
-            phone: "+1 (555) 456-7890",
-            subject: "Group Classes",
-            message:
-              "What yoga classes do you offer? I am a beginner and looking for a suitable class.",
-            status: "new",
-            createdAt: "2024-01-12T16:45:00Z",
-          },
-        ]);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchContacts();
   }, []);
+
+  const fetchContacts = async () => {
+    try {
+      setLoading(true);
+      const response = await contactAPI.getContacts();
+      if (response.data.success) {
+        setContacts(response.data.contacts || []);
+      }
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filteredContacts = contacts.filter((contact) => {
     const matchesSearch =
@@ -90,19 +51,37 @@ const Contacts = () => {
     return matchesSearch && matchesStatus;
   });
 
-  const handleStatusChange = (contactId, newStatus) => {
-    setContacts(
-      contacts.map((contact) =>
-        contact._id === contactId ? { ...contact, status: newStatus } : contact
-      )
-    );
+  const handleStatusChange = async (contactId, newStatus) => {
+    try {
+      const response = await contactAPI.updateContact(contactId, {
+        status: newStatus,
+      });
+      if (response.data.success) {
+        setContacts(
+          contacts.map((contact) =>
+            contact._id === contactId
+              ? { ...contact, status: newStatus }
+              : contact
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating contact status:", error);
+    }
   };
 
-  const handleDeleteContact = (contactId) => {
+  const handleDeleteContact = async (contactId) => {
     if (
       window.confirm("Are you sure you want to delete this contact message?")
     ) {
-      setContacts(contacts.filter((contact) => contact._id !== contactId));
+      try {
+        const response = await contactAPI.deleteContact(contactId);
+        if (response.data.success) {
+          setContacts(contacts.filter((contact) => contact._id !== contactId));
+        }
+      } catch (error) {
+        console.error("Error deleting contact:", error);
+      }
     }
   };
 

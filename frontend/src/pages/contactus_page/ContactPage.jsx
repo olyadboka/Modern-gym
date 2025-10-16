@@ -13,9 +13,12 @@ import {
   CheckCircle,
 } from "lucide-react";
 import HeroSection from "../../components/hero";
+import { contactAPI } from "../../utils/api";
 
 const ContactPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
@@ -24,14 +27,32 @@ const ContactPage = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
+    setError("");
+    
     try {
-      // Here you would typically send the data to your backend
-      console.log("Form data:", data);
-      setIsSubmitted(true);
-      reset();
-      setTimeout(() => setIsSubmitted(false), 5000);
+      const contactData = {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.phone || "",
+        subject: data.subject,
+        message: data.message,
+      };
+
+      const response = await contactAPI.createContact(contactData);
+      
+      if (response.data.success) {
+        setIsSubmitted(true);
+        reset();
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        setError("Failed to send message. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setError("Failed to send message. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -138,6 +159,16 @@ const ContactPage = () => {
                     <span className="text-green-300">
                       Thank you! Your message has been sent successfully.
                     </span>
+                  </motion.div>
+                )}
+
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-6 p-4 bg-red-900 border border-red-600 rounded-lg flex items-center space-x-2"
+                  >
+                    <span className="text-red-300">{error}</span>
                   </motion.div>
                 )}
 
@@ -301,10 +332,17 @@ const ContactPage = () => {
 
                   <button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2"
+                    disabled={isLoading}
+                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Send className="w-5 h-5" />
-                    <span>Send Message</span>
+                    {isLoading ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Send className="w-5 h-5" />
+                        <span>Send Message</span>
+                      </>
+                    )}
                   </button>
                 </form>
               </div>

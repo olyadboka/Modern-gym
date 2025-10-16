@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Eye, EyeOff, User, Lock, Dumbbell } from "lucide-react";
-import axios from "axios";
+import { authAPI } from "../utils/api";
 
 const Login = ({ setIsAuthenticated, setUser }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,28 +18,37 @@ const Login = ({ setIsAuthenticated, setUser }) => {
     setError("");
 
     try {
-      // For demo purposes, we'll use a simple authentication
-      // In production, this would call your actual API
-      if (
-        data.email === "admin@fitfatgym.com" &&
-        data.password === "admin123"
-      ) {
-        const mockAdminUser = {
-          _id: "admin123",
-          name: "Admin User",
-          email: "admin@fitfatgym.com",
-          role: "admin",
-        };
+      const response = await authAPI.login({
+        email: data.email,
+        password: data.password,
+      });
 
-        localStorage.setItem("adminToken", "mock-admin-token");
-        localStorage.setItem("adminUser", JSON.stringify(mockAdminUser));
-        setUser(mockAdminUser);
+      if (response.data.success) {
+        const { user: userData, token } = response.data;
+
+        // Check if user is admin
+        if (userData.role !== "admin") {
+          setError("Access denied. Admin privileges required.");
+          return;
+        }
+
+        // Store admin auth data
+        localStorage.setItem("adminToken", token);
+        localStorage.setItem("adminUser", JSON.stringify(userData));
+        setUser(userData);
         setIsAuthenticated(true);
       } else {
-        setError("Invalid email or password");
+        setError(response.data.message || "Login failed");
       }
-    } catch (err) {
-      setError("Login failed. Please try again.");
+    } catch (error) {
+      console.error("Admin login error:", error);
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else if (error.response?.status === 401) {
+        setError("Invalid email or password");
+      } else {
+        setError("Login failed. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -158,15 +167,13 @@ const Login = ({ setIsAuthenticated, setUser }) => {
             </button>
           </form>
 
-          {/* Demo Credentials */}
+          {/* Note */}
           <div className="mt-6 p-4 bg-blue-900/50 border border-blue-700 rounded-lg">
             <h4 className="text-sm font-medium text-blue-200 mb-2">
-              Demo Credentials:
+              Admin Access Required:
             </h4>
             <p className="text-xs text-blue-300">
-              Email: admin@fitfatgym.com
-              <br />
-              Password: admin123
+              Please use your admin credentials to access the dashboard.
             </p>
           </div>
         </div>

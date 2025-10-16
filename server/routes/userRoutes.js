@@ -2,6 +2,7 @@ import express from "express";
 import {
   registerUser,
   loginUser,
+  logoutUser,
   getUserProfile,
   updateUserProfile,
   getAllUsers,
@@ -18,8 +19,9 @@ import {
 const router = express.Router();
 
 // Public routes
-router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/register", validateUserRegistration, registerUser);
+router.post("/login", validateUserLogin, loginUser);
+router.post("/logout", logoutUser);
 
 // Protected routes
 router.use(authenticateToken); // All routes below require authentication

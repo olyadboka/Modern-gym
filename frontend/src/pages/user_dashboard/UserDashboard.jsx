@@ -1,75 +1,110 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Calendar, 
-  Clock, 
-  User, 
-  CreditCard, 
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import {
+  Calendar,
+  Clock,
+  User,
+  CreditCard,
   Settings,
   Activity,
   TrendingUp,
   Award,
-  Bell
-} from 'lucide-react';
+  Bell,
+  Edit,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
+import { bookingAPI } from "../../utils/api";
 
 const UserDashboard = () => {
-  const [user, setUser] = useState(null);
   const [bookings, setBookings] = useState([]);
   const [membership, setMembership] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
 
   useEffect(() => {
-    // Mock data - in production, this would come from your API
-    setTimeout(() => {
-      setUser({
-        name: 'John Doe',
-        email: 'john@example.com',
-        membershipType: 'Premium',
-        joinDate: '2024-01-15'
-      });
-      
-      setBookings([
-        {
-          _id: '1',
-          title: 'Morning Yoga',
-          date: '2024-01-20',
-          time: '06:00-07:00',
-          trainer: 'Emily Rodriguez',
-          status: 'confirmed'
-        },
-        {
-          _id: '2',
-          title: 'HIIT Cardio',
-          date: '2024-01-22',
-          time: '18:00-19:00',
-          trainer: 'Mike Chen',
-          status: 'confirmed'
-        }
-      ]);
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
 
-      setMembership({
-        type: 'Premium',
-        startDate: '2024-01-15',
-        endDate: '2024-02-15',
-        status: 'active',
-        autoRenew: true
-      });
-    }, 1000);
-  }, []);
+    fetchDashboardData();
+  }, [isAuthenticated, navigate]);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+
+      // Fetch user bookings
+      const bookingsResponse = await bookingAPI.getUserBookings();
+      if (bookingsResponse.data.success) {
+        setBookings(bookingsResponse.data.bookings || []);
+      }
+
+      // Set membership info from user data
+      if (user) {
+        setMembership({
+          type: user.membershipType || "Basic",
+          joinDate: user.joinDate,
+          status: user.isActive ? "active" : "inactive",
+          autoRenew: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching dashboard data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const stats = [
-    { label: 'Classes This Month', value: '12', icon: Activity },
-    { label: 'Workouts Completed', value: '45', icon: TrendingUp },
-    { label: 'Achievements', value: '8', icon: Award },
-    { label: 'Days Active', value: '28', icon: Calendar }
+    {
+      label: "Classes This Month",
+      value: bookings.length.toString(),
+      icon: Activity,
+    },
+    {
+      label: "Total Bookings",
+      value: bookings.length.toString(),
+      icon: TrendingUp,
+    },
+    {
+      label: "Membership Type",
+      value: membership?.type || "Basic",
+      icon: Award,
+    },
+    {
+      label: "Member Since",
+      value: user?.joinDate
+        ? new Date(user.joinDate).toLocaleDateString()
+        : "N/A",
+      icon: Calendar,
+    },
   ];
+
+  if (loading) {
+    return (
+      <div className="pt-20 min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your dashboard...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, {user?.name}!</h1>
-          <p className="text-gray-600">Here's your fitness dashboard overview.</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Welcome back, {user?.name}!
+          </h1>
+          <p className="text-gray-600">
+            Here's your fitness dashboard overview.
+          </p>
         </div>
 
         {/* Stats Cards */}
@@ -85,7 +120,9 @@ const UserDashboard = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600">{stat.label}</p>
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
                 </div>
                 <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
                   <stat.icon className="w-6 h-6 text-primary-600" />
@@ -100,28 +137,60 @@ const UserDashboard = () => {
           <div className="lg:col-span-2">
             <div className="card">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Upcoming Classes</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  Upcoming Classes
+                </h2>
                 <button className="btn-primary">Book New Class</button>
               </div>
-              
+
               <div className="space-y-4">
-                {bookings.map((booking) => (
-                  <div key={booking._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-primary-100 rounded-full flex items-center justify-center">
-                        <Calendar className="w-6 h-6 text-primary-600" />
+                {bookings.length > 0 ? (
+                  bookings.map((booking) => (
+                    <div
+                      key={booking._id}
+                      className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                          <Calendar className="w-6 h-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-gray-900">
+                            {booking.className || booking.title}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {booking.trainerName || "Trainer"}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {booking.date} at {booking.time}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{booking.title}</h3>
-                        <p className="text-sm text-gray-600">{booking.trainer}</p>
-                        <p className="text-sm text-gray-500">{booking.date} at {booking.time}</p>
-                      </div>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm ${
+                          booking.status === "confirmed"
+                            ? "bg-green-100 text-green-800"
+                            : booking.status === "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                        }`}
+                      >
+                        {booking.status}
+                      </span>
                     </div>
-                    <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
-                      {booking.status}
-                    </span>
+                  ))
+                ) : (
+                  <div className="text-center py-8">
+                    <Calendar className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                    <p className="text-gray-600 mb-4">No bookings yet</p>
+                    <button
+                      onClick={() => navigate("/schedule")}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+                    >
+                      Book a Class
+                    </button>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>
@@ -129,55 +198,88 @@ const UserDashboard = () => {
           {/* Membership Info */}
           <div>
             <div className="card mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Membership</h2>
-              
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Membership
+              </h2>
+
               <div className="space-y-4">
                 <div>
                   <p className="text-sm text-gray-600">Current Plan</p>
-                  <p className="text-xl font-bold text-gray-900">{membership?.type}</p>
+                  <p className="text-xl font-bold text-gray-900">
+                    {membership?.type}
+                  </p>
                 </div>
-                
+
                 <div>
                   <p className="text-sm text-gray-600">Status</p>
-                  <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      membership?.status === "active"
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
                     {membership?.status}
                   </span>
                 </div>
-                
+
                 <div>
-                  <p className="text-sm text-gray-600">Expires</p>
-                  <p className="text-gray-900">{membership?.endDate}</p>
+                  <p className="text-sm text-gray-600">Member Since</p>
+                  <p className="text-gray-900">
+                    {membership?.joinDate
+                      ? new Date(membership.joinDate).toLocaleDateString()
+                      : "N/A"}
+                  </p>
                 </div>
-                
+
                 <div className="flex items-center justify-between pt-4 border-t">
                   <span className="text-sm text-gray-600">Auto Renew</span>
-                  <span className="text-sm text-gray-900">{membership?.autoRenew ? 'On' : 'Off'}</span>
+                  <span className="text-sm text-gray-900">
+                    {membership?.autoRenew ? "On" : "Off"}
+                  </span>
                 </div>
               </div>
-              
-              <button className="w-full mt-6 admin-btn-secondary">
+
+              <button
+                onClick={() => navigate("/membership")}
+                className="w-full mt-6 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-4 rounded-lg transition-colors"
+              >
                 Manage Membership
               </button>
             </div>
 
             {/* Quick Actions */}
             <div className="card">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-              
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                Quick Actions
+              </h2>
+
               <div className="space-y-3">
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                <button
+                  onClick={() => navigate("/schedule")}
+                  className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                >
                   <Calendar className="w-5 h-5 text-gray-400" />
                   <span>View Schedule</span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                <button
+                  onClick={() => navigate("/trainers")}
+                  className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                >
                   <User className="w-5 h-5 text-gray-400" />
                   <span>Book Trainer</span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                <button
+                  onClick={() => navigate("/membership")}
+                  className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                >
                   <CreditCard className="w-5 h-5 text-gray-400" />
                   <span>Payment History</span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors">
+                <button
+                  onClick={() => navigate("/profile")}
+                  className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors"
+                >
                   <Settings className="w-5 h-5 text-gray-400" />
                   <span>Account Settings</span>
                 </button>

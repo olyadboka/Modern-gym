@@ -11,6 +11,7 @@ import {
   Users,
   Star,
 } from "lucide-react";
+import { trainerAPI } from "../utils/api";
 
 const Trainers = () => {
   const [trainers, setTrainers] = useState([]);
@@ -19,67 +20,23 @@ const Trainers = () => {
   const [filterSpecialization, setFilterSpecialization] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Mock data - in production, this would come from your API
   useEffect(() => {
-    const fetchTrainers = async () => {
-      // Simulate API call
-      setTimeout(() => {
-        setTrainers([
-          {
-            _id: "1",
-            name: "Sarah Johnson",
-            specialization: "Strength Training",
-            image:
-              "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
-            experience: "8 years",
-            rating: 4.9,
-            clients: 150,
-            isActive: true,
-            socialLinks: {
-              facebook: "#",
-              instagram: "#",
-              twitter: "#",
-            },
-          },
-          {
-            _id: "2",
-            name: "Mike Chen",
-            specialization: "Cardio & HIIT",
-            image:
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
-            experience: "6 years",
-            rating: 4.8,
-            clients: 120,
-            isActive: true,
-            socialLinks: {
-              facebook: "#",
-              instagram: "#",
-              twitter: "#",
-            },
-          },
-          {
-            _id: "3",
-            name: "Emily Rodriguez",
-            specialization: "Yoga & Pilates",
-            image:
-              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
-            experience: "10 years",
-            rating: 4.9,
-            clients: 200,
-            isActive: true,
-            socialLinks: {
-              facebook: "#",
-              instagram: "#",
-              twitter: "#",
-            },
-          },
-        ]);
-        setLoading(false);
-      }, 1000);
-    };
-
     fetchTrainers();
   }, []);
+
+  const fetchTrainers = async () => {
+    try {
+      setLoading(true);
+      const response = await trainerAPI.getTrainers();
+      if (response.data.success) {
+        setTrainers(response.data.trainers || []);
+      }
+    } catch (error) {
+      console.error("Error fetching trainers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const specializations = [
     "Strength Training",
@@ -101,19 +58,63 @@ const Trainers = () => {
     return matchesSearch && matchesSpecialization;
   });
 
-  const handleToggleStatus = (trainerId) => {
-    setTrainers(
-      trainers.map((trainer) =>
-        trainer._id === trainerId
-          ? { ...trainer, isActive: !trainer.isActive }
-          : trainer
-      )
-    );
+  const handleToggleStatus = async (trainerId) => {
+    try {
+      const trainer = trainers.find((t) => t._id === trainerId);
+      const newStatus = !trainer.isActive;
+
+      const response = await trainerAPI.updateTrainer(trainerId, {
+        isActive: newStatus,
+      });
+      if (response.data.success) {
+        setTrainers(
+          trainers.map((t) =>
+            t._id === trainerId ? { ...t, isActive: newStatus } : t
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating trainer status:", error);
+    }
   };
 
-  const handleDeleteTrainer = (trainerId) => {
+  const handleDeleteTrainer = async (trainerId) => {
     if (window.confirm("Are you sure you want to delete this trainer?")) {
-      setTrainers(trainers.filter((trainer) => trainer._id !== trainerId));
+      try {
+        const response = await trainerAPI.deleteTrainer(trainerId);
+        if (response.data.success) {
+          setTrainers(trainers.filter((trainer) => trainer._id !== trainerId));
+        }
+      } catch (error) {
+        console.error("Error deleting trainer:", error);
+      }
+    }
+  };
+
+  const handleAddTrainer = async (trainerData) => {
+    try {
+      const response = await trainerAPI.createTrainer(trainerData);
+      if (response.data.success) {
+        setTrainers([...trainers, response.data.trainer]);
+        setShowAddModal(false);
+      }
+    } catch (error) {
+      console.error("Error adding trainer:", error);
+    }
+  };
+
+  const handleEditTrainer = async (trainerId, trainerData) => {
+    try {
+      const response = await trainerAPI.updateTrainer(trainerId, trainerData);
+      if (response.data.success) {
+        setTrainers(
+          trainers.map((trainer) =>
+            trainer._id === trainerId ? response.data.trainer : trainer
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error updating trainer:", error);
     }
   };
 

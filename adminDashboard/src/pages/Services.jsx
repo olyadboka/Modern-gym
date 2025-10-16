@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Search, Plus, Edit, Trash2, Eye, Save, X } from "lucide-react";
+import { serviceAPI } from "../utils/api";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -17,51 +18,23 @@ const Services = () => {
     order: 0,
   });
 
-  // Mock data - in production, this would come from your API
   useEffect(() => {
-    const fetchServices = async () => {
-      setTimeout(() => {
-        setServices([
-          {
-            _id: "1",
-            title: "Personal Training",
-            description:
-              "One-on-one training sessions with certified personal trainers tailored to your fitness goals.",
-            icon: "Dumbbell",
-            features: [
-              "Customized workout plans",
-              "Nutrition guidance",
-              "Progress tracking",
-              "Flexible scheduling",
-            ],
-            price: "From $80/session",
-            category: "Personal Training",
-            order: 1,
-            isActive: true,
-          },
-          {
-            _id: "2",
-            title: "Group Classes",
-            description:
-              "Join our energetic group fitness classes designed for all fitness levels.",
-            icon: "Users",
-            features: [
-              "Variety of class types",
-              "Experienced instructors",
-              "Motivating atmosphere",
-              "All fitness levels welcome",
-            ],
-            price: "Included in membership",
-            category: "Group Classes",
-            order: 2,
-            isActive: true,
-          },
-        ]);
-        setLoading(false);
-      }, 1000);
-    };
     fetchServices();
   }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const response = await serviceAPI.getServices();
+      if (response.data.success) {
+        setServices(response.data.services || []);
+      }
+    } catch (error) {
+      console.error("Error fetching services:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categories = [
     "Personal Training",
@@ -101,34 +74,12 @@ const Services = () => {
     });
   };
 
-  const handleSaveService = () => {
+  const handleSaveService = async () => {
     if (editingService) {
-      setServices(
-        services.map((s) =>
-          s._id === editingService._id
-            ? { ...editingService, ...newService }
-            : s
-        )
-      );
-      setEditingService(null);
+      await handleUpdateService(editingService._id, newService);
     } else {
-      const service = {
-        _id: Date.now().toString(),
-        ...newService,
-        isActive: true,
-      };
-      setServices([...services, service]);
+      await handleAddService(newService);
     }
-    setShowAddModal(false);
-    setNewService({
-      title: "",
-      description: "",
-      icon: "",
-      features: [""],
-      price: "",
-      category: "Personal Training",
-      order: 0,
-    });
   };
 
   const handleEditService = (service) => {
@@ -145,9 +96,54 @@ const Services = () => {
     setShowAddModal(true);
   };
 
-  const handleDeleteService = (serviceId) => {
+  const handleDeleteService = async (serviceId) => {
     if (window.confirm("Are you sure you want to delete this service?")) {
-      setServices(services.filter((s) => s._id !== serviceId));
+      try {
+        const response = await serviceAPI.deleteService(serviceId);
+        if (response.data.success) {
+          setServices(services.filter((s) => s._id !== serviceId));
+        }
+      } catch (error) {
+        console.error("Error deleting service:", error);
+      }
+    }
+  };
+
+  const handleAddService = async (serviceData) => {
+    try {
+      const response = await serviceAPI.createService(serviceData);
+      if (response.data.success) {
+        setServices([...services, response.data.service]);
+        setShowAddModal(false);
+        setNewService({
+          title: "",
+          description: "",
+          icon: "",
+          features: [""],
+          price: "",
+          category: "Personal Training",
+          order: 0,
+        });
+      }
+    } catch (error) {
+      console.error("Error adding service:", error);
+    }
+  };
+
+  const handleUpdateService = async (serviceId, serviceData) => {
+    try {
+      const response = await serviceAPI.updateService(serviceId, serviceData);
+      if (response.data.success) {
+        setServices(
+          services.map((service) =>
+            service._id === serviceId ? response.data.service : service
+          )
+        );
+        setShowAddModal(false);
+        setEditingService(null);
+      }
+    } catch (error) {
+      console.error("Error updating service:", error);
     }
   };
 
