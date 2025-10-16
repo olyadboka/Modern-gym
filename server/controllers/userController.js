@@ -22,7 +22,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    const { name, email, phone, password } = req.body;
+    const { name, email, phone, password, membershipType } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -44,11 +44,11 @@ export const registerUser = async (req, res) => {
       password: hashedPassword,
       joinDate: new Date(),
       role: "user",
+      membershipType: membershipType,
     });
 
     await user.save();
 
-    // Generate token
     const token = generateToken(user._id);
 
     // Remove password from response

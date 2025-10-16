@@ -5,6 +5,8 @@ export const DbConnection = () => {
     mongoose.connect(
       process.env.MONGODB_URI || "mongodb://localhost:27017/gymwebsite"
     );
+
+    console.log("Database connected successfully");
   } catch (error) {
     console.log("error while connecting to the database", error);
   }

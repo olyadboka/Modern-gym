@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import {
   Eye,
   EyeOff,
@@ -19,6 +20,7 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
   const {
     register,
     handleSubmit,
@@ -30,19 +32,63 @@ const SignupPage = () => {
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setError("");
+
     try {
-      // Here you would typically send the data to your backend
-      console.log("Signup data:", data);
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Prepare the data for backend
+
+      const userData = {
+        name: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        password: data.password,
+        membershipType: "basic",
+      };
+
+      const formData = new FormData();
+
+      formData.append({
+        name: data.fullName,
+      });
+      formData.append({
+        email: data.email,
+      });
+      formData.append({
+        phone: data.phone,
+      });
+      formData.append({
+        password: data.password,
+      });
+      console.log("Sending signup data:", formData);
+
+      // Send data to backend API
+      const response = await axios.post(
+        "http://localhost:3000/api/users/register",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: formData,
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Signup failed");
+      }
+
+      console.log("Signup successful:", result);
       setIsSubmitted(true);
     } catch (error) {
       console.error("Signup error:", error);
+      setError(error.message || "Something went wrong. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  // Success state after submission
   if (isSubmitted) {
     return (
       <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-black">
@@ -105,6 +151,34 @@ const SignupPage = () => {
             Start your fitness journey today
           </p>
         </motion.div>
+
+        {/* Error Message */}
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded-lg"
+          >
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-red-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm">{error}</p>
+              </div>
+            </div>
+          </motion.div>
+        )}
 
         {/* Signup Form */}
         <motion.div
