@@ -103,50 +103,50 @@ const Dashboard = () => {
       title: "Total Members",
       value: stats.totalUsers,
       icon: Users,
-      color: "text-blue-600",
-      bgColor: "bg-blue-100",
+      color: "text-blue-400",
+      bgColor: "bg-blue-900",
       change: "+12%",
     },
     {
       title: "Active Trainers",
       value: stats.totalTrainers,
       icon: UserCheck,
-      color: "text-green-600",
-      bgColor: "bg-green-100",
+      color: "text-green-400",
+      bgColor: "bg-green-900",
       change: "+2",
     },
     {
       title: "Contact Messages",
       value: stats.totalContacts,
       icon: MessageSquare,
-      color: "text-purple-600",
-      bgColor: "bg-purple-100",
+      color: "text-purple-400",
+      bgColor: "bg-purple-900",
       change: "+5",
     },
     {
       title: "New Memberships",
       value: stats.newMemberships,
       icon: TrendingUp,
-      color: "text-orange-600",
-      bgColor: "bg-orange-100",
+      color: "text-orange-400",
+      bgColor: "bg-orange-900",
       change: "+18%",
     },
   ];
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="flex items-center justify-center h-64 bg-black">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-black">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+        <p className="text-gray-400">
           Welcome back! Here's what's happening at FitFat Gym.
         </p>
       </div>
@@ -154,16 +154,19 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat, index) => (
-          <div key={index} className="admin-card p-6">
+          <div
+            key={index}
+            className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800 hover:shadow-xl transition-shadow duration-300"
+          >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">
+                <p className="text-sm font-medium text-gray-400">
                   {stat.title}
                 </p>
-                <p className="text-3xl font-bold text-gray-900 mt-2">
+                <p className="text-3xl font-bold text-white mt-2">
                   {stat.value}
                 </p>
-                <p className="text-sm text-green-600 mt-1">
+                <p className="text-sm text-green-400 mt-1">
                   {stat.change} from last month
                 </p>
               </div>
@@ -178,16 +181,23 @@ const Dashboard = () => {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Member Growth Chart */}
-        <div className="admin-card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Member Growth
           </h3>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={memberGrowthData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <XAxis dataKey="month" stroke="#9CA3AF" />
+              <YAxis stroke="#9CA3AF" />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1F2937",
+                  border: "1px solid #374151",
+                  borderRadius: "8px",
+                  color: "#F9FAFB",
+                }}
+              />
               <Line
                 type="monotone"
                 dataKey="members"
@@ -199,8 +209,8 @@ const Dashboard = () => {
         </div>
 
         {/* Membership Types Chart */}
-        <div className="admin-card p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
+          <h3 className="text-lg font-semibold text-white mb-4">
             Membership Distribution
           </h3>
           <ResponsiveContainer width="100%" height={300}>
@@ -217,22 +227,29 @@ const Dashboard = () => {
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#1F2937",
+                  border: "1px solid #374151",
+                  borderRadius: "8px",
+                  color: "#F9FAFB",
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Recent Activities */}
-      <div className="admin-card p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+      <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
+        <h3 className="text-lg font-semibold text-white mb-4">
           Recent Activities
         </h3>
         <div className="space-y-4">
           {recentActivities.map((activity) => (
             <div
               key={activity.id}
-              className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg"
+              className="flex items-center space-x-4 p-3 bg-gray-800 rounded-lg border border-gray-700"
             >
               <div
                 className={`w-2 h-2 rounded-full ${
@@ -244,11 +261,11 @@ const Dashboard = () => {
                 }`}
               ></div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900">
+                <p className="text-sm font-medium text-white">
                   <span className="font-semibold">{activity.user}</span>{" "}
                   {activity.action}
                 </p>
-                <p className="text-xs text-gray-500">{activity.time}</p>
+                <p className="text-xs text-gray-400">{activity.time}</p>
               </div>
               <Calendar className="w-4 h-4 text-gray-400" />
             </div>
@@ -257,20 +274,18 @@ const Dashboard = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="admin-card p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Quick Actions
-        </h3>
+      <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
+        <h3 className="text-lg font-semibold text-white mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="admin-btn-primary flex items-center justify-center space-x-2 py-3">
+          <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2">
             <Users className="w-5 h-5" />
             <span>View All Members</span>
           </button>
-          <button className="admin-btn-secondary flex items-center justify-center space-x-2 py-3">
+          <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-700">
             <UserCheck className="w-5 h-5" />
             <span>Manage Trainers</span>
           </button>
-          <button className="admin-btn-secondary flex items-center justify-center space-x-2 py-3">
+          <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-700">
             <MessageSquare className="w-5 h-5" />
             <span>View Messages</span>
           </button>

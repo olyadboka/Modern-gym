@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  UserCheck, 
+import React, { useState, useEffect } from "react";
+import {
+  Search,
+  Plus,
+  Edit,
+  Trash2,
+  Eye,
+  UserCheck,
   UserX,
   Award,
   Users,
-  Star
-} from 'lucide-react';
+  Star,
+} from "lucide-react";
 
 const Trainers = () => {
   const [trainers, setTrainers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterSpecialization, setFilterSpecialization] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterSpecialization, setFilterSpecialization] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
 
   // Mock data - in production, this would come from your API
@@ -26,50 +26,53 @@ const Trainers = () => {
       setTimeout(() => {
         setTrainers([
           {
-            _id: '1',
-            name: 'Sarah Johnson',
-            specialization: 'Strength Training',
-            image: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80',
-            experience: '8 years',
+            _id: "1",
+            name: "Sarah Johnson",
+            specialization: "Strength Training",
+            image:
+              "https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
+            experience: "8 years",
             rating: 4.9,
             clients: 150,
             isActive: true,
             socialLinks: {
-              facebook: '#',
-              instagram: '#',
-              twitter: '#'
-            }
+              facebook: "#",
+              instagram: "#",
+              twitter: "#",
+            },
           },
           {
-            _id: '2',
-            name: 'Mike Chen',
-            specialization: 'Cardio & HIIT',
-            image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80',
-            experience: '6 years',
+            _id: "2",
+            name: "Mike Chen",
+            specialization: "Cardio & HIIT",
+            image:
+              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
+            experience: "6 years",
             rating: 4.8,
             clients: 120,
             isActive: true,
             socialLinks: {
-              facebook: '#',
-              instagram: '#',
-              twitter: '#'
-            }
+              facebook: "#",
+              instagram: "#",
+              twitter: "#",
+            },
           },
           {
-            _id: '3',
-            name: 'Emily Rodriguez',
-            specialization: 'Yoga & Pilates',
-            image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80',
-            experience: '10 years',
+            _id: "3",
+            name: "Emily Rodriguez",
+            specialization: "Yoga & Pilates",
+            image:
+              "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=687&q=80",
+            experience: "10 years",
             rating: 4.9,
             clients: 200,
             isActive: true,
             socialLinks: {
-              facebook: '#',
-              instagram: '#',
-              twitter: '#'
-            }
-          }
+              facebook: "#",
+              instagram: "#",
+              twitter: "#",
+            },
+          },
         ]);
         setLoading(false);
       }, 1000);
@@ -79,46 +82,49 @@ const Trainers = () => {
   }, []);
 
   const specializations = [
-    'Strength Training',
-    'Cardio & HIIT',
-    'Yoga & Pilates',
-    'Functional Training',
-    'Nutrition & Wellness',
-    'Sports Performance'
+    "Strength Training",
+    "Cardio & HIIT",
+    "Yoga & Pilates",
+    "Functional Training",
+    "Nutrition & Wellness",
+    "Sports Performance",
   ];
 
-  const filteredTrainers = trainers.filter(trainer => {
-    const matchesSearch = trainer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         trainer.specialization.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesSpecialization = filterSpecialization === 'all' || trainer.specialization === filterSpecialization;
-    
+  const filteredTrainers = trainers.filter((trainer) => {
+    const matchesSearch =
+      trainer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      trainer.specialization.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSpecialization =
+      filterSpecialization === "all" ||
+      trainer.specialization === filterSpecialization;
+
     return matchesSearch && matchesSpecialization;
   });
 
   const handleToggleStatus = (trainerId) => {
-    setTrainers(trainers.map(trainer => 
-      trainer._id === trainerId 
-        ? { ...trainer, isActive: !trainer.isActive }
-        : trainer
-    ));
+    setTrainers(
+      trainers.map((trainer) =>
+        trainer._id === trainerId
+          ? { ...trainer, isActive: !trainer.isActive }
+          : trainer
+      )
+    );
   };
 
   const handleDeleteTrainer = (trainerId) => {
-    if (window.confirm('Are you sure you want to delete this trainer?')) {
-      setTrainers(trainers.filter(trainer => trainer._id !== trainerId));
+    if (window.confirm("Are you sure you want to delete this trainer?")) {
+      setTrainers(trainers.filter((trainer) => trainer._id !== trainerId));
     }
   };
 
   const getStatusBadge = (isActive) => {
-    return isActive 
-      ? 'admin-badge admin-badge-success'
-      : 'admin-badge admin-badge-error';
+    return isActive ? "bg-green-900 text-green-300" : "bg-red-900 text-red-300";
   };
 
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -128,12 +134,14 @@ const Trainers = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Trainers Management</h1>
-          <p className="text-gray-600">Manage gym trainers and their profiles</p>
+          <h1 className="text-3xl font-bold text-white">Trainers Management</h1>
+          <p className="text-gray-400">
+            Manage gym trainers and their profiles
+          </p>
         </div>
-        <button 
+        <button
           onClick={() => setShowAddModal(true)}
-          className="admin-btn-primary mt-4 sm:mt-0 flex items-center space-x-2"
+          className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 mt-4 sm:mt-0 flex items-center space-x-2"
         >
           <Plus className="w-5 h-5" />
           <span>Add Trainer</span>
@@ -141,7 +149,7 @@ const Trainers = () => {
       </div>
 
       {/* Filters */}
-      <div className="admin-card p-6">
+      <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative">
@@ -151,7 +159,7 @@ const Trainers = () => {
               placeholder="Search trainers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="admin-input pl-10"
+              className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
             />
           </div>
 
@@ -159,18 +167,22 @@ const Trainers = () => {
           <select
             value={filterSpecialization}
             onChange={(e) => setFilterSpecialization(e.target.value)}
-            className="admin-input"
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
           >
-            <option value="all">All Specializations</option>
-            {specializations.map(spec => (
-              <option key={spec} value={spec}>{spec}</option>
+            <option value="all" className="bg-gray-800">
+              All Specializations
+            </option>
+            {specializations.map((spec) => (
+              <option key={spec} value={spec} className="bg-gray-800">
+                {spec}
+              </option>
             ))}
           </select>
 
           {/* Stats */}
-          <div className="flex items-center justify-center space-x-4 text-sm text-gray-600">
+          <div className="flex items-center justify-center space-x-4 text-sm text-gray-400">
             <span>Total: {trainers.length}</span>
-            <span>Active: {trainers.filter(t => t.isActive).length}</span>
+            <span>Active: {trainers.filter((t) => t.isActive).length}</span>
           </div>
         </div>
       </div>
@@ -178,7 +190,10 @@ const Trainers = () => {
       {/* Trainers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredTrainers.map((trainer) => (
-          <div key={trainer._id} className="admin-card overflow-hidden">
+          <div
+            key={trainer._id}
+            className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 overflow-hidden hover:shadow-xl transition-shadow duration-300"
+          >
             {/* Trainer Image */}
             <div className="relative">
               <img
@@ -186,75 +201,93 @@ const Trainers = () => {
                 alt={trainer.name}
                 className="w-full h-48 object-cover"
               />
-              <div className="absolute top-4 right-4 flex items-center space-x-1 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1">
+              <div className="absolute top-4 right-4 flex items-center space-x-1 bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1">
                 <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                <span className="text-sm font-bold text-gray-800">{trainer.rating}</span>
+                <span className="text-sm font-bold text-white">
+                  {trainer.rating}
+                </span>
               </div>
               <div className="absolute bottom-4 left-4">
-                <span className={getStatusBadge(trainer.isActive)}>
-                  {trainer.isActive ? 'Active' : 'Inactive'}
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusBadge(trainer.isActive)}`}
+                >
+                  {trainer.isActive ? "Active" : "Inactive"}
                 </span>
               </div>
             </div>
 
             {/* Trainer Info */}
             <div className="p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{trainer.name}</h3>
-              <p className="text-primary-600 font-semibold mb-4">{trainer.specialization}</p>
-              
+              <h3 className="text-xl font-bold text-white mb-2">
+                {trainer.name}
+              </h3>
+              <p className="text-blue-400 font-semibold mb-4">
+                {trainer.specialization}
+              </p>
+
               {/* Stats */}
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="text-center">
-                  <div className="flex items-center justify-center w-10 h-10 bg-primary-100 rounded-full mx-auto mb-2">
-                    <Award className="w-5 h-5 text-primary-600" />
+                  <div className="flex items-center justify-center w-10 h-10 bg-blue-900 rounded-full mx-auto mb-2">
+                    <Award className="w-5 h-5 text-blue-400" />
                   </div>
-                  <p className="text-sm font-bold text-gray-800">{trainer.experience}</p>
-                  <p className="text-xs text-gray-600">Experience</p>
+                  <p className="text-sm font-bold text-white">
+                    {trainer.experience}
+                  </p>
+                  <p className="text-xs text-gray-400">Experience</p>
                 </div>
                 <div className="text-center">
-                  <div className="flex items-center justify-center w-10 h-10 bg-primary-100 rounded-full mx-auto mb-2">
-                    <Users className="w-5 h-5 text-primary-600" />
+                  <div className="flex items-center justify-center w-10 h-10 bg-blue-900 rounded-full mx-auto mb-2">
+                    <Users className="w-5 h-5 text-blue-400" />
                   </div>
-                  <p className="text-sm font-bold text-gray-800">{trainer.clients}</p>
-                  <p className="text-xs text-gray-600">Clients</p>
+                  <p className="text-sm font-bold text-white">
+                    {trainer.clients}
+                  </p>
+                  <p className="text-xs text-gray-400">Clients</p>
                 </div>
                 <div className="text-center">
-                  <div className="flex items-center justify-center w-10 h-10 bg-primary-100 rounded-full mx-auto mb-2">
-                    <Star className="w-5 h-5 text-primary-600" />
+                  <div className="flex items-center justify-center w-10 h-10 bg-blue-900 rounded-full mx-auto mb-2">
+                    <Star className="w-5 h-5 text-blue-400" />
                   </div>
-                  <p className="text-sm font-bold text-gray-800">{trainer.rating}</p>
-                  <p className="text-xs text-gray-600">Rating</p>
+                  <p className="text-sm font-bold text-white">
+                    {trainer.rating}
+                  </p>
+                  <p className="text-xs text-gray-400">Rating</p>
                 </div>
               </div>
 
               {/* Actions */}
               <div className="flex space-x-2">
-                <button className="admin-btn-secondary flex-1 flex items-center justify-center space-x-2">
+                <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 flex-1 flex items-center justify-center space-x-2 border border-gray-700">
                   <Eye className="w-4 h-4" />
                   <span>View</span>
                 </button>
-                <button className="admin-btn-primary flex-1 flex items-center justify-center space-x-2">
+                <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 flex-1 flex items-center justify-center space-x-2">
                   <Edit className="w-4 h-4" />
                   <span>Edit</span>
                 </button>
               </div>
 
               {/* Quick Actions */}
-              <div className="flex justify-center space-x-4 mt-4 pt-4 border-t border-gray-200">
+              <div className="flex justify-center space-x-4 mt-4 pt-4 border-t border-gray-700">
                 <button
                   onClick={() => handleToggleStatus(trainer._id)}
-                  className={`p-2 rounded-lg ${
-                    trainer.isActive 
-                      ? 'text-red-600 hover:bg-red-50' 
-                      : 'text-green-600 hover:bg-green-50'
+                  className={`p-2 rounded-lg border transition-colors ${
+                    trainer.isActive
+                      ? "text-red-400 hover:bg-red-900 border-red-800"
+                      : "text-green-400 hover:bg-green-900 border-green-800"
                   }`}
-                  title={trainer.isActive ? 'Deactivate' : 'Activate'}
+                  title={trainer.isActive ? "Deactivate" : "Activate"}
                 >
-                  {trainer.isActive ? <UserX className="w-5 h-5" /> : <UserCheck className="w-5 h-5" />}
+                  {trainer.isActive ? (
+                    <UserX className="w-5 h-5" />
+                  ) : (
+                    <UserCheck className="w-5 h-5" />
+                  )}
                 </button>
                 <button
                   onClick={() => handleDeleteTrainer(trainer._id)}
-                  className="p-2 rounded-lg text-red-600 hover:bg-red-50"
+                  className="p-2 rounded-lg text-red-400 hover:bg-red-900 border border-red-800 transition-colors"
                   title="Delete"
                 >
                   <Trash2 className="w-5 h-5" />
@@ -266,11 +299,13 @@ const Trainers = () => {
       </div>
 
       {filteredTrainers.length === 0 && (
-        <div className="admin-card p-12 text-center">
-          <p className="text-gray-500 text-lg">No trainers found matching your criteria.</p>
-          <button 
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-12 text-center border border-gray-800">
+          <p className="text-gray-400 text-lg">
+            No trainers found matching your criteria.
+          </p>
+          <button
             onClick={() => setShowAddModal(true)}
-            className="admin-btn-primary mt-4"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 mt-4"
           >
             Add Your First Trainer
           </button>
@@ -280,19 +315,21 @@ const Trainers = () => {
       {/* Add Trainer Modal Placeholder */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Add New Trainer</h3>
-            <p className="text-gray-600 mb-6">Trainer form would go here...</p>
+          <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4 border border-gray-800">
+            <h3 className="text-lg font-bold text-white mb-4">
+              Add New Trainer
+            </h3>
+            <p className="text-gray-400 mb-6">Trainer form would go here...</p>
             <div className="flex space-x-4">
-              <button 
+              <button
                 onClick={() => setShowAddModal(false)}
-                className="admin-btn-secondary flex-1"
+                className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1 border border-gray-700"
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={() => setShowAddModal(false)}
-                className="admin-btn-primary flex-1"
+                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1"
               >
                 Add Trainer
               </button>

@@ -113,11 +113,11 @@ const Contacts = () => {
 
   const getStatusBadge = (status) => {
     const badges = {
-      new: "admin-badge admin-badge-warning",
-      read: "admin-badge admin-badge-info",
-      replied: "admin-badge admin-badge-success",
+      new: "bg-yellow-900 text-yellow-300",
+      read: "bg-blue-900 text-blue-300",
+      replied: "bg-green-900 text-green-300",
     };
-    return badges[status] || "admin-badge admin-badge-info";
+    return badges[status] || "bg-blue-900 text-blue-300";
   };
 
   const getStatusIcon = (status) => {
@@ -146,7 +146,7 @@ const Contacts = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
@@ -155,42 +155,40 @@ const Contacts = () => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Contact Messages</h1>
-        <p className="text-gray-600">
+        <h1 className="text-3xl font-bold text-white">Contact Messages</h1>
+        <p className="text-gray-400">
           Manage and respond to customer inquiries
         </p>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="admin-card p-6 text-center">
-          <h3 className="text-2xl font-bold text-gray-900">
-            {contacts.length}
-          </h3>
-          <p className="text-gray-600">Total Messages</p>
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 text-center border border-gray-800">
+          <h3 className="text-2xl font-bold text-white">{contacts.length}</h3>
+          <p className="text-gray-400">Total Messages</p>
         </div>
-        <div className="admin-card p-6 text-center">
-          <h3 className="text-2xl font-bold text-yellow-600">
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 text-center border border-gray-800">
+          <h3 className="text-2xl font-bold text-yellow-400">
             {contacts.filter((c) => c.status === "new").length}
           </h3>
-          <p className="text-gray-600">New Messages</p>
+          <p className="text-gray-400">New Messages</p>
         </div>
-        <div className="admin-card p-6 text-center">
-          <h3 className="text-2xl font-bold text-blue-600">
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 text-center border border-gray-800">
+          <h3 className="text-2xl font-bold text-blue-400">
             {contacts.filter((c) => c.status === "read").length}
           </h3>
-          <p className="text-gray-600">Read Messages</p>
+          <p className="text-gray-400">Read Messages</p>
         </div>
-        <div className="admin-card p-6 text-center">
-          <h3 className="text-2xl font-bold text-green-600">
+        <div className="bg-gray-900 rounded-2xl shadow-lg p-6 text-center border border-gray-800">
+          <h3 className="text-2xl font-bold text-green-400">
             {contacts.filter((c) => c.status === "replied").length}
           </h3>
-          <p className="text-gray-600">Replied Messages</p>
+          <p className="text-gray-400">Replied Messages</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="admin-card p-6">
+      <div className="bg-gray-900 rounded-2xl shadow-lg p-6 border border-gray-800">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Search */}
           <div className="relative">
@@ -200,7 +198,7 @@ const Contacts = () => {
               placeholder="Search messages..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="admin-input pl-10"
+              className="w-full pl-10 pr-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
             />
           </div>
 
@@ -208,16 +206,24 @@ const Contacts = () => {
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="admin-input"
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
           >
-            <option value="all">All Status</option>
-            <option value="new">New</option>
-            <option value="read">Read</option>
-            <option value="replied">Replied</option>
+            <option value="all" className="bg-gray-800">
+              All Status
+            </option>
+            <option value="new" className="bg-gray-800">
+              New
+            </option>
+            <option value="read" className="bg-gray-800">
+              Read
+            </option>
+            <option value="replied" className="bg-gray-800">
+              Replied
+            </option>
           </select>
 
           {/* Filter Button */}
-          <button className="admin-btn-secondary flex items-center justify-center space-x-2">
+          <button className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 border border-gray-700">
             <Filter className="w-5 h-5" />
             <span>Filter</span>
           </button>
@@ -225,26 +231,41 @@ const Contacts = () => {
       </div>
 
       {/* Contacts Table */}
-      <div className="admin-card">
+      <div className="bg-gray-900 rounded-2xl shadow-lg border border-gray-800 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="admin-table">
-            <thead>
+          <table className="w-full">
+            <thead className="bg-gray-800">
               <tr>
-                <th>Contact</th>
-                <th>Subject</th>
-                <th>Message Preview</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Actions</th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Contact
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Subject
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Message Preview
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Date
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">
+                  Actions
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-800">
               {filteredContacts.map((contact) => (
-                <tr key={contact._id}>
-                  <td>
+                <tr
+                  key={contact._id}
+                  className="hover:bg-gray-800 transition-colors duration-200"
+                >
+                  <td className="px-6 py-4">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                        <span className="text-primary-600 font-semibold">
+                      <div className="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center">
+                        <span className="text-blue-300 font-semibold">
                           {contact.name
                             .split(" ")
                             .map((n) => n[0])
@@ -252,10 +273,8 @@ const Contacts = () => {
                         </span>
                       </div>
                       <div>
-                        <p className="font-medium text-gray-900">
-                          {contact.name}
-                        </p>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
+                        <p className="font-medium text-white">{contact.name}</p>
+                        <div className="flex items-center space-x-4 text-sm text-gray-400">
                           <div className="flex items-center space-x-1">
                             <Mail className="w-3 h-3" />
                             <span>{contact.email}</span>
@@ -268,37 +287,35 @@ const Contacts = () => {
                       </div>
                     </div>
                   </td>
-                  <td>
-                    <p className="font-medium text-gray-900">
-                      {contact.subject}
-                    </p>
+                  <td className="px-6 py-4">
+                    <p className="font-medium text-white">{contact.subject}</p>
                   </td>
-                  <td>
-                    <p className="text-sm text-gray-600 max-w-xs truncate">
+                  <td className="px-6 py-4">
+                    <p className="text-sm text-gray-300 max-w-xs truncate">
                       {contact.message}
                     </p>
                   </td>
-                  <td>
+                  <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <Calendar className="w-4 h-4 text-gray-400" />
-                      <span className="text-sm text-gray-600">
+                      <span className="text-sm text-gray-300">
                         {formatDate(contact.createdAt)}
                       </span>
                     </div>
                   </td>
-                  <td>
+                  <td className="px-6 py-4">
                     <span
-                      className={`${getStatusBadge(contact.status)} flex items-center space-x-1 w-fit`}
+                      className={`px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1 w-fit ${getStatusBadge(contact.status)}`}
                     >
                       {getStatusIcon(contact.status)}
                       <span className="capitalize">{contact.status}</span>
                     </span>
                   </td>
-                  <td>
+                  <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => handleViewContact(contact)}
-                        className="p-2 rounded-lg text-blue-600 hover:bg-blue-50"
+                        className="p-2 rounded-lg text-blue-400 hover:bg-blue-900 border border-blue-800 transition-colors"
                         title="View"
                       >
                         <Eye className="w-4 h-4" />
@@ -308,15 +325,21 @@ const Contacts = () => {
                         onChange={(e) =>
                           handleStatusChange(contact._id, e.target.value)
                         }
-                        className="text-xs border border-gray-300 rounded px-2 py-1"
+                        className="text-xs bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white"
                       >
-                        <option value="new">New</option>
-                        <option value="read">Read</option>
-                        <option value="replied">Replied</option>
+                        <option value="new" className="bg-gray-800">
+                          New
+                        </option>
+                        <option value="read" className="bg-gray-800">
+                          Read
+                        </option>
+                        <option value="replied" className="bg-gray-800">
+                          Replied
+                        </option>
                       </select>
                       <button
                         onClick={() => handleDeleteContact(contact._id)}
-                        className="p-2 rounded-lg text-red-600 hover:bg-red-50"
+                        className="p-2 rounded-lg text-red-400 hover:bg-red-900 border border-red-800 transition-colors"
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -341,14 +364,14 @@ const Contacts = () => {
       {/* Contact Detail Modal */}
       {showModal && selectedContact && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-gray-900 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-800">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-gray-900">
+              <h3 className="text-xl font-bold text-white">
                 Contact Message Details
               </h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-300"
               >
                 ×
               </button>
@@ -356,32 +379,32 @@ const Contacts = () => {
 
             <div className="space-y-6">
               {/* Contact Info */}
-              <div className="admin-card p-4">
-                <h4 className="font-semibold text-gray-900 mb-3">
+              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                <h4 className="font-semibold text-white mb-3">
                   Contact Information
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm text-gray-600">Name</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-400">Name</p>
+                    <p className="font-medium text-white">
                       {selectedContact.name}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-400">Email</p>
+                    <p className="font-medium text-white">
                       {selectedContact.email}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Phone</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-400">Phone</p>
+                    <p className="font-medium text-white">
                       {selectedContact.phone}
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Date</p>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-sm text-gray-400">Date</p>
+                    <p className="font-medium text-white">
                       {formatDate(selectedContact.createdAt)}
                     </p>
                   </div>
@@ -389,18 +412,18 @@ const Contacts = () => {
               </div>
 
               {/* Message Details */}
-              <div className="admin-card p-4">
-                <h4 className="font-semibold text-gray-900 mb-3">
+              <div className="bg-gray-800 rounded-lg p-4 border border-gray-700">
+                <h4 className="font-semibold text-white mb-3">
                   Message Details
                 </h4>
                 <div>
-                  <p className="text-sm text-gray-600 mb-2">Subject</p>
-                  <p className="font-medium text-gray-900 mb-4">
+                  <p className="text-sm text-gray-400 mb-2">Subject</p>
+                  <p className="font-medium text-white mb-4">
                     {selectedContact.subject}
                   </p>
-                  <p className="text-sm text-gray-600 mb-2">Message</p>
-                  <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-gray-900 whitespace-pre-wrap">
+                  <p className="text-sm text-gray-400 mb-2">Message</p>
+                  <div className="bg-gray-700 p-4 rounded-lg border border-gray-600">
+                    <p className="text-white whitespace-pre-wrap">
                       {selectedContact.message}
                     </p>
                   </div>
@@ -409,13 +432,13 @@ const Contacts = () => {
 
               {/* Actions */}
               <div className="flex space-x-4">
-                <button className="admin-btn-primary flex-1 flex items-center justify-center space-x-2">
+                <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1 flex items-center justify-center space-x-2">
                   <Reply className="w-4 h-4" />
                   <span>Reply</span>
                 </button>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="admin-btn-secondary flex-1"
+                  className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1 border border-gray-700"
                 >
                   Close
                 </button>
