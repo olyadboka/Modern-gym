@@ -25,7 +25,7 @@ const HeroSection = () => {
           playsInline
           className="w-full h-full object-cover opacity-40"
         >
-          <source src="homebg.mp4" type="video/mp4" />
+          <source src="/homebg.mp4" type="video/mp4" />
           <div className="w-full h-full bg-gradient-to-r from-blue-900 via-purple-900 to-blue-900"></div>
         </video>
         {/* <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900 to-gray-900 opacity-70"></div> */}
