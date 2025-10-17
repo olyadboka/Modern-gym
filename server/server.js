@@ -8,6 +8,7 @@ import rateLimit from "express-rate-limit";
 import { DbConnection } from "./configs/dbconnection.js";
 import bcrypt from "bcryptjs";
 import User from "./models/user_model.js";
+import seedData from "./seed-data.js";
 
 // Import routes
 import userRoutes from "./routes/userRoutes.js";
@@ -131,6 +132,9 @@ app.listen(port, async () => {
     } else {
       console.log("👑 Admin user already exists:", adminEmail);
     }
+
+    // Seed default data
+    await seedData();
   } catch (e) {
     console.error("Failed to ensure admin user:", e.message);
   }

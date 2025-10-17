@@ -7,6 +7,7 @@ import {
   MessageSquare,
   X,
   Dumbbell,
+  Calendar,
 } from "lucide-react";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -30,6 +31,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       name: "Services",
       path: "/services",
       icon: Dumbbell,
+    },
+    {
+      name: "Schedules",
+      path: "/schedules",
+      icon: Calendar,
     },
     {
       name: "Contacts",

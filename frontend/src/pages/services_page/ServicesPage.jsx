@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   Dumbbell,
@@ -12,9 +12,40 @@ import {
   ArrowRight,
 } from "lucide-react";
 import HeroSection from "../../components/hero";
+import { serviceAPI } from "../../utils/api";
 
 const ServicesPage = () => {
-  const services = [
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  // Fetch services from backend
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const response = await serviceAPI.getServices();
+        if (response.data.success) {
+          setServices(response.data.services || []);
+        } else {
+          // Fallback to default services if API fails
+          setServices(defaultServices);
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+        setError("Failed to load services");
+        // Fallback to default services
+        setServices(defaultServices);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  // Default services as fallback
+  const defaultServices = [
     {
       icon: Dumbbell,
       title: "Personal Training",
@@ -157,8 +188,18 @@ const ServicesPage = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-400 mb-4">{error}</p>
+              <p className="text-gray-400">Showing default services</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
@@ -198,7 +239,8 @@ const ServicesPage = () => {
                 </div>
               </motion.div>
             ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, Users, MapPin, Filter, Search } from "lucide-react";
 import HeroSection from "../../components/hero";
+import { scheduleAPI } from "../../utils/api";
 
 const SchedulePage = () => {
   const [schedules, setSchedules] = useState([]);
@@ -28,59 +29,75 @@ const SchedulePage = () => {
     "Martial Arts",
   ];
 
+  // Default schedules as fallback
+  const defaultSchedules = [
+    {
+      _id: "1",
+      title: "Morning Yoga",
+      trainer: {
+        name: "Emily Rodriguez",
+        specialization: "Yoga & Pilates",
+      },
+      dayOfWeek: "Monday",
+      startTime: "06:00",
+      endTime: "07:00",
+      maxParticipants: 20,
+      currentParticipants: 15,
+      room: "Studio A",
+      difficulty: "All Levels",
+      category: "Yoga",
+    },
+    {
+      _id: "2",
+      title: "HIIT Cardio",
+      trainer: { name: "Mike Chen", specialization: "Cardio & HIIT" },
+      dayOfWeek: "Monday",
+      startTime: "18:00",
+      endTime: "19:00",
+      maxParticipants: 15,
+      currentParticipants: 12,
+      room: "Main Floor",
+      difficulty: "Intermediate",
+      category: "HIIT",
+    },
+    {
+      _id: "3",
+      title: "Strength Training",
+      trainer: {
+        name: "Sarah Johnson",
+        specialization: "Strength Training",
+      },
+      dayOfWeek: "Tuesday",
+      startTime: "07:00",
+      endTime: "08:00",
+      maxParticipants: 12,
+      currentParticipants: 8,
+      room: "Weight Room",
+      difficulty: "Advanced",
+      category: "Strength Training",
+    },
+  ];
+
   useEffect(() => {
     const fetchSchedules = async () => {
-      setTimeout(() => {
-        setSchedules([
-          {
-            _id: "1",
-            title: "Morning Yoga",
-            trainer: {
-              name: "Emily Rodriguez",
-              specialization: "Yoga & Pilates",
-            },
-            dayOfWeek: "Monday",
-            startTime: "06:00",
-            endTime: "07:00",
-            maxParticipants: 20,
-            currentParticipants: 15,
-            room: "Studio A",
-            difficulty: "All Levels",
-            category: "Yoga",
-          },
-          {
-            _id: "2",
-            title: "HIIT Cardio",
-            trainer: { name: "Mike Chen", specialization: "Cardio & HIIT" },
-            dayOfWeek: "Monday",
-            startTime: "18:00",
-            endTime: "19:00",
-            maxParticipants: 15,
-            currentParticipants: 12,
-            room: "Main Floor",
-            difficulty: "Intermediate",
-            category: "HIIT",
-          },
-          {
-            _id: "3",
-            title: "Strength Training",
-            trainer: {
-              name: "Sarah Johnson",
-              specialization: "Strength Training",
-            },
-            dayOfWeek: "Tuesday",
-            startTime: "07:00",
-            endTime: "08:00",
-            maxParticipants: 12,
-            currentParticipants: 8,
-            room: "Weight Room",
-            difficulty: "Advanced",
-            category: "Strength Training",
-          },
-        ]);
+      try {
+        setLoading(true);
+        const response = await scheduleAPI.getSchedules();
+        if (response.data.success) {
+          setSchedules(response.data.schedules || []);
+        } else {
+          // Fallback to default schedules if API fails
+          setSchedules(defaultSchedules);
+        }
+      } catch (error) {
+        console.error("Error fetching schedules:", error);
+        // Fallback to default schedules
+        setSchedules(defaultSchedules);
+      } finally {
         setLoading(false);
-      }, 1000);
+      }
     };
+
     fetchSchedules();
   }, []);
 

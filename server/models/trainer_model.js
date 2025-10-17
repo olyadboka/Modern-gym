@@ -28,6 +28,16 @@ const trainerSchema = new mongoose.Schema(
       min: 0,
       max: 5,
     },
+    bio: {
+      type: String,
+      default: "",
+    },
+    specialties: [String],
+    certifications: [String],
+    availability: {
+      type: String,
+      default: "Mon-Fri: 6AM-8PM",
+    },
     socialLinks: {
       facebook: String,
       instagram: String,

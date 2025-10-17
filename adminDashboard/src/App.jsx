@@ -8,6 +8,7 @@ import Trainers from "./pages/Trainers";
 import Contacts from "./pages/Contacts";
 import Services from "./pages/Services";
 import Memberships from "./pages/Memberships";
+import Schedules from "./pages/Schedules";
 import Login from "./pages/Login";
 
 const App = () => {
@@ -64,6 +65,7 @@ const App = () => {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/services" element={<Services />} />
             <Route path="/memberships" element={<Memberships />} />
+            <Route path="/schedules" element={<Schedules />} />
           </Routes>
         </main>
       </div>

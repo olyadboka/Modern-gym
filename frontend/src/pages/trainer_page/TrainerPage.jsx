@@ -14,13 +14,38 @@ import {
   Filter,
 } from "lucide-react";
 import HeroSection from "../../components/hero";
+import { trainerAPI } from "../../utils/api";
 
 const TrainerPage = () => {
   const [selectedSpecialty, setSelectedSpecialty] = useState("all");
   const [trainers, setTrainers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // Mock data - in real app, this would come from your backend
-  const mockTrainers = [
+  useEffect(() => {
+    const fetchTrainers = async () => {
+      try {
+        setLoading(true);
+        const response = await trainerAPI.getTrainers();
+        if (response.data.success) {
+          setTrainers(response.data.trainers || []);
+        } else {
+          setTrainers(defaultTrainers);
+        }
+      } catch (error) {
+        console.error("Error fetching trainers:", error);
+        setError("Failed to load trainers");
+
+        setTrainers(defaultTrainers);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrainers();
+  }, []);
+
+  const defaultTrainers = [
     {
       id: 1,
       name: "Sarah Johnson",
@@ -148,6 +173,7 @@ const TrainerPage = () => {
   ];
 
   useEffect(() => {
+    const mockTrainers = defaultTrainers;
     setTrainers(mockTrainers);
   }, []);
 
@@ -196,161 +222,172 @@ const TrainerPage = () => {
       {/* Trainers Grid */}
       <section className="py-20 bg-black">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredTrainers.map((trainer, index) => (
-              <motion.div
-                key={trainer.id}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-gray-900 rounded-2xl shadow-lg p-6 group hover:shadow-xl transition-shadow duration-300"
-              >
-                {/* Trainer Image */}
-                <div className="relative mb-6">
-                  <img
-                    src={trainer.image}
-                    alt={trainer.name}
-                    className="w-full h-64 object-cover rounded-2xl"
-                  />
-                  <div className="absolute top-4 right-4 bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                    <span className="text-sm font-bold text-white">
-                      {trainer.rating}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Trainer Info */}
-                <div className="text-center mb-6">
-                  <h3 className="text-2xl font-bold mb-2 text-white">
-                    {trainer.name}
-                  </h3>
-                  <p className="text-blue-400 font-semibold mb-3">
-                    {trainer.specialization}
-                  </p>
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {trainer.bio}
-                  </p>
-                </div>
-
-                {/* Stats */}
-                <div className="grid grid-cols-3 gap-4 mb-6">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Award className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <p className="text-sm font-bold text-white">
-                      {trainer.experience}
-                    </p>
-                    <p className="text-xs text-gray-400">Experience</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Users className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <p className="text-sm font-bold text-white">
-                      {trainer.clients}
-                    </p>
-                    <p className="text-xs text-gray-400">Clients</p>
-                  </div>
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
-                      <Star className="w-6 h-6 text-blue-400" />
-                    </div>
-                    <p className="text-sm font-bold text-white">
-                      {trainer.rating}
-                    </p>
-                    <p className="text-xs text-gray-400">Rating</p>
-                  </div>
-                </div>
-
-                {/* Specialties */}
-                <div className="mb-6">
-                  <h4 className="font-bold text-white mb-3 flex items-center">
-                    <Dumbbell className="w-4 h-4 mr-2 text-blue-400" />
-                    Specialties
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {trainer.specialties.map((specialty, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-medium"
-                      >
-                        {specialty}
+          {loading ? (
+            <div className="flex items-center justify-center py-20">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-20">
+              <p className="text-red-400 mb-4">{error}</p>
+              <p className="text-gray-400">Showing default trainers</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredTrainers.map((trainer, index) => (
+                <motion.div
+                  key={trainer._id || trainer.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="bg-gray-900 rounded-2xl shadow-lg p-6 group hover:shadow-xl transition-shadow duration-300"
+                >
+                  {/* Trainer Image */}
+                  <div className="relative mb-6">
+                    <img
+                      src={trainer.image}
+                      alt={trainer.name}
+                      className="w-full h-64 object-cover rounded-2xl"
+                    />
+                    <div className="absolute top-4 right-4 bg-gray-800/90 backdrop-blur-sm rounded-full px-3 py-1 flex items-center space-x-1">
+                      <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                      <span className="text-sm font-bold text-white">
+                        {trainer.rating}
                       </span>
-                    ))}
+                    </div>
                   </div>
-                </div>
 
-                {/* Certifications */}
-                <div className="mb-6">
-                  <h4 className="font-bold text-white mb-3 flex items-center">
-                    <Award className="w-4 h-4 mr-2 text-purple-400" />
-                    Certifications
-                  </h4>
-                  <div className="flex flex-wrap gap-2">
-                    {trainer.certifications.map((cert, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-purple-900 text-purple-300 rounded-full text-xs font-medium"
-                      >
-                        {cert}
-                      </span>
-                    ))}
+                  {/* Trainer Info */}
+                  <div className="text-center mb-6">
+                    <h3 className="text-2xl font-bold mb-2 text-white">
+                      {trainer.name}
+                    </h3>
+                    <p className="text-blue-400 font-semibold mb-3">
+                      {trainer.specialization}
+                    </p>
+                    <p className="text-gray-400 text-sm leading-relaxed">
+                      {trainer.bio}
+                    </p>
                   </div>
-                </div>
 
-                {/* Availability */}
-                <div className="mb-6">
-                  <h4 className="font-bold text-white mb-2 flex items-center">
-                    <Clock className="w-4 h-4 mr-2 text-green-400" />
-                    Availability
-                  </h4>
-                  <p className="text-sm text-gray-400">
-                    {trainer.availability}
-                  </p>
-                </div>
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 gap-4 mb-6">
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Award className="w-6 h-6 text-blue-400" />
+                      </div>
+                      <p className="text-sm font-bold text-white">
+                        {trainer.experience}
+                      </p>
+                      <p className="text-xs text-gray-400">Experience</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Users className="w-6 h-6 text-blue-400" />
+                      </div>
+                      <p className="text-sm font-bold text-white">
+                        {trainer.clients}
+                      </p>
+                      <p className="text-xs text-gray-400">Clients</p>
+                    </div>
+                    <div className="text-center">
+                      <div className="w-12 h-12 bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <Star className="w-6 h-6 text-blue-400" />
+                      </div>
+                      <p className="text-sm font-bold text-white">
+                        {trainer.rating}
+                      </p>
+                      <p className="text-xs text-gray-400">Rating</p>
+                    </div>
+                  </div>
 
-                {/* Social Links */}
-                <div className="flex justify-center space-x-4 mb-6">
-                  <a
-                    href={trainer.socialLinks.instagram}
-                    className="p-2 bg-gray-800 text-pink-400 rounded-full hover:bg-pink-600 hover:text-white transition-colors duration-200"
-                  >
-                    <Instagram className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={trainer.socialLinks.facebook}
-                    className="p-2 bg-gray-800 text-blue-400 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-200"
-                  >
-                    <Facebook className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={trainer.socialLinks.twitter}
-                    className="p-2 bg-gray-800 text-blue-300 rounded-full hover:bg-blue-400 hover:text-white transition-colors duration-200"
-                  >
-                    <Twitter className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`mailto:${trainer.name.toLowerCase().replace(" ", ".")}@fitfatgym.com`}
-                    className="p-2 bg-gray-800 text-gray-400 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200"
-                  >
-                    <Mail className="w-5 h-5" />
-                  </a>
-                </div>
+                  {/* Specialties */}
+                  <div className="mb-6">
+                    <h4 className="font-bold text-white mb-3 flex items-center">
+                      <Dumbbell className="w-4 h-4 mr-2 text-blue-400" />
+                      Specialties
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {trainer.specialties.map((specialty, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-blue-900 text-blue-300 rounded-full text-xs font-medium"
+                        >
+                          {specialty}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
 
-                {/* Action Buttons */}
-                <div className="flex space-x-3">
-                  <button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition-all duration-200 text-sm">
-                    Book Session
-                  </button>
-                  <button className="px-4 py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition-colors duration-200">
-                    <Heart className="w-5 h-5" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                  {/* Certifications */}
+                  <div className="mb-6">
+                    <h4 className="font-bold text-white mb-3 flex items-center">
+                      <Award className="w-4 h-4 mr-2 text-purple-400" />
+                      Certifications
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {trainer.certifications.map((cert, idx) => (
+                        <span
+                          key={idx}
+                          className="px-3 py-1 bg-purple-900 text-purple-300 rounded-full text-xs font-medium"
+                        >
+                          {cert}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Availability */}
+                  <div className="mb-6">
+                    <h4 className="font-bold text-white mb-2 flex items-center">
+                      <Clock className="w-4 h-4 mr-2 text-green-400" />
+                      Availability
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {trainer.availability}
+                    </p>
+                  </div>
+
+                  {/* Social Links */}
+                  <div className="flex justify-center space-x-4 mb-6">
+                    <a
+                      href={trainer.socialLinks.instagram}
+                      className="p-2 bg-gray-800 text-pink-400 rounded-full hover:bg-pink-600 hover:text-white transition-colors duration-200"
+                    >
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                    <a
+                      href={trainer.socialLinks.facebook}
+                      className="p-2 bg-gray-800 text-blue-400 rounded-full hover:bg-blue-600 hover:text-white transition-colors duration-200"
+                    >
+                      <Facebook className="w-5 h-5" />
+                    </a>
+                    <a
+                      href={trainer.socialLinks.twitter}
+                      className="p-2 bg-gray-800 text-blue-300 rounded-full hover:bg-blue-400 hover:text-white transition-colors duration-200"
+                    >
+                      <Twitter className="w-5 h-5" />
+                    </a>
+                    <a
+                      href={`mailto:${trainer.name.toLowerCase().replace(" ", ".")}@fitfatgym.com`}
+                      className="p-2 bg-gray-800 text-gray-400 rounded-full hover:bg-gray-600 hover:text-white transition-colors duration-200"
+                    >
+                      <Mail className="w-5 h-5" />
+                    </a>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex space-x-3">
+                    <button className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 rounded-lg transition-all duration-200 text-sm">
+                      Book Session
+                    </button>
+                    <button className="px-4 py-3 border-2 border-blue-500 text-blue-500 rounded-full hover:bg-blue-500 hover:text-white transition-colors duration-200">
+                      <Heart className="w-5 h-5" />
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
