@@ -5,7 +5,7 @@ import Service from '../models/service_model.js';
 export const getAllServices = async (req, res) => {
   try {
     const services = await Service.find({ isActive: true }).sort({ order: 1 });
-    res.status(200).json({ services });
+    res.status(200).json({ success: true, services });
   } catch (error) {
     console.error('Get services error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -22,7 +22,7 @@ export const getServiceById = async (req, res) => {
       return res.status(404).json({ message: 'Service not found' });
     }
 
-    res.status(200).json({ service });
+    res.status(200).json({ success: true, service });
   } catch (error) {
     console.error('Get service error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -55,6 +55,7 @@ export const createService = async (req, res) => {
     await service.save();
 
     res.status(201).json({
+      success: true,
       message: 'Service created successfully',
       service
     });
@@ -89,6 +90,7 @@ export const updateService = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Service updated successfully',
       service
     });
@@ -109,7 +111,7 @@ export const deleteService = async (req, res) => {
       return res.status(404).json({ message: 'Service not found' });
     }
 
-    res.status(200).json({ message: 'Service deleted successfully' });
+    res.status(200).json({ success: true, message: 'Service deleted successfully' });
   } catch (error) {
     console.error('Delete service error:', error);
     res.status(500).json({ message: 'Server error' });

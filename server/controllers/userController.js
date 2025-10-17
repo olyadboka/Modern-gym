@@ -170,7 +170,7 @@ export const loginUser = async (req, res) => {
       success: true,
       message: "Login successful",
       user: userResponse,
-      token, // Still sending token in response for frontend storage if needed
+      token,
     });
   } catch (error) {
     console.error("Login error:", error);

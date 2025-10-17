@@ -22,6 +22,7 @@ export const getAllTrainers = async (req, res) => {
     const total = await Trainer.countDocuments(query);
 
     res.status(200).json({
+      success: true,
       trainers,
       pagination: {
         current: page,
@@ -46,7 +47,7 @@ export const getTrainerById = async (req, res) => {
       return res.status(404).json({ message: 'Trainer not found' });
     }
 
-    res.status(200).json({ trainer });
+    res.status(200).json({ success: true, trainer });
   } catch (error) {
     console.error('Get trainer error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -65,18 +66,22 @@ export const createTrainer = async (req, res) => {
       });
     }
 
-    const { name, specialization, image, socialLinks } = req.body;
+    const { name, specialization, image, experience, clients, rating, socialLinks } = req.body;
 
     const trainer = new Trainer({
       name,
       specialization,
       image,
+      experience: experience || "5+ years",
+      clients: clients || 0,
+      rating: rating || 4.5,
       socialLinks: socialLinks || {}
     });
 
     await trainer.save();
 
     res.status(201).json({
+      success: true,
       message: 'Trainer created successfully',
       trainer
     });
@@ -99,12 +104,15 @@ export const updateTrainer = async (req, res) => {
     }
 
     const { trainerId } = req.params;
-    const { name, specialization, image, socialLinks, isActive } = req.body;
+    const { name, specialization, image, experience, clients, rating, socialLinks, isActive } = req.body;
 
     const updateData = {};
     if (name) updateData.name = name;
     if (specialization) updateData.specialization = specialization;
     if (image) updateData.image = image;
+    if (experience) updateData.experience = experience;
+    if (clients !== undefined) updateData.clients = clients;
+    if (rating !== undefined) updateData.rating = rating;
     if (socialLinks) updateData.socialLinks = socialLinks;
     if (typeof isActive === 'boolean') updateData.isActive = isActive;
 
@@ -119,6 +127,7 @@ export const updateTrainer = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Trainer updated successfully',
       trainer
     });
@@ -139,7 +148,7 @@ export const deleteTrainer = async (req, res) => {
       return res.status(404).json({ message: 'Trainer not found' });
     }
 
-    res.status(200).json({ message: 'Trainer deleted successfully' });
+    res.status(200).json({ success: true, message: 'Trainer deleted successfully' });
   } catch (error) {
     console.error('Delete trainer error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -151,7 +160,7 @@ export const getTrainerSpecializations = async (req, res) => {
   try {
     const specializations = await Trainer.distinct('specialization', { isActive: true });
     
-    res.status(200).json({ specializations });
+    res.status(200).json({ success: true, specializations });
   } catch (error) {
     console.error('Get specializations error:', error);
     res.status(500).json({ message: 'Server error' });

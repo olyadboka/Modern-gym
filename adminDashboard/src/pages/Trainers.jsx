@@ -19,6 +19,20 @@ const Trainers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterSpecialization, setFilterSpecialization] = useState("all");
   const [showAddModal, setShowAddModal] = useState(false);
+  const [editingTrainer, setEditingTrainer] = useState(null);
+  const [newTrainer, setNewTrainer] = useState({
+    name: "",
+    specialization: "Strength Training",
+    image: "",
+    experience: "5+ years",
+    clients: 0,
+    rating: 4.5,
+    socialLinks: {
+      facebook: "",
+      instagram: "",
+      twitter: "",
+    },
+  });
 
   useEffect(() => {
     fetchTrainers();
@@ -91,30 +105,87 @@ const Trainers = () => {
     }
   };
 
-  const handleAddTrainer = async (trainerData) => {
+  const handleAddTrainer = async () => {
     try {
-      const response = await trainerAPI.createTrainer(trainerData);
+      const response = await trainerAPI.createTrainer(newTrainer);
       if (response.data.success) {
         setTrainers([...trainers, response.data.trainer]);
         setShowAddModal(false);
+        setNewTrainer({
+          name: "",
+          specialization: "Strength Training",
+          image: "",
+          experience: "5+ years",
+          clients: 0,
+          rating: 4.5,
+          socialLinks: {
+            facebook: "",
+            instagram: "",
+            twitter: "",
+          },
+        });
       }
     } catch (error) {
       console.error("Error adding trainer:", error);
     }
   };
 
-  const handleEditTrainer = async (trainerId, trainerData) => {
+  const handleEditTrainer = async () => {
     try {
-      const response = await trainerAPI.updateTrainer(trainerId, trainerData);
+      const response = await trainerAPI.updateTrainer(
+        editingTrainer._id,
+        newTrainer
+      );
       if (response.data.success) {
         setTrainers(
           trainers.map((trainer) =>
-            trainer._id === trainerId ? response.data.trainer : trainer
+            trainer._id === editingTrainer._id ? response.data.trainer : trainer
           )
         );
+        setShowAddModal(false);
+        setEditingTrainer(null);
+        setNewTrainer({
+          name: "",
+          specialization: "Strength Training",
+          image: "",
+          experience: "5+ years",
+          clients: 0,
+          rating: 4.5,
+          socialLinks: {
+            facebook: "",
+            instagram: "",
+            twitter: "",
+          },
+        });
       }
     } catch (error) {
       console.error("Error updating trainer:", error);
+    }
+  };
+
+  const handleEditClick = (trainer) => {
+    setEditingTrainer(trainer);
+    setNewTrainer({
+      name: trainer.name,
+      specialization: trainer.specialization,
+      image: trainer.image,
+      experience: trainer.experience,
+      clients: trainer.clients,
+      rating: trainer.rating,
+      socialLinks: trainer.socialLinks || {
+        facebook: "",
+        instagram: "",
+        twitter: "",
+      },
+    });
+    setShowAddModal(true);
+  };
+
+  const handleSaveTrainer = () => {
+    if (editingTrainer) {
+      handleEditTrainer();
+    } else {
+      handleAddTrainer();
     }
   };
 
@@ -263,7 +334,10 @@ const Trainers = () => {
                   <Eye className="w-4 h-4" />
                   <span>View</span>
                 </button>
-                <button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 flex-1 flex items-center justify-center space-x-2">
+                <button
+                  onClick={() => handleEditClick(trainer)}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-2 px-4 rounded-lg transition-all duration-200 flex-1 flex items-center justify-center space-x-2"
+                >
                   <Edit className="w-4 h-4" />
                   <span>Edit</span>
                 </button>
@@ -313,27 +387,227 @@ const Trainers = () => {
         </div>
       )}
 
-      {/* Add Trainer Modal Placeholder */}
+      {/* Add/Edit Trainer Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-900 rounded-lg p-6 max-w-md w-full mx-4 border border-gray-800">
-            <h3 className="text-lg font-bold text-white mb-4">
-              Add New Trainer
-            </h3>
-            <p className="text-gray-400 mb-6">Trainer form would go here...</p>
-            <div className="flex space-x-4">
+          <div className="bg-gray-900 rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto border border-gray-800">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-bold text-white">
+                {editingTrainer ? "Edit Trainer" : "Add New Trainer"}
+              </h3>
               <button
-                onClick={() => setShowAddModal(false)}
-                className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1 border border-gray-700"
+                onClick={() => {
+                  setShowAddModal(false);
+                  setEditingTrainer(null);
+                }}
+                className="text-gray-400 hover:text-gray-300"
               >
-                Cancel
+                ×
               </button>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1"
-              >
-                Add Trainer
-              </button>
+            </div>
+
+            <div className="space-y-4">
+              {/* Basic Info */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    value={newTrainer.name}
+                    onChange={(e) =>
+                      setNewTrainer({ ...newTrainer, name: e.target.value })
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                    placeholder="Trainer name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Specialization
+                  </label>
+                  <select
+                    value={newTrainer.specialization}
+                    onChange={(e) =>
+                      setNewTrainer({
+                        ...newTrainer,
+                        specialization: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white"
+                  >
+                    {specializations.map((spec) => (
+                      <option key={spec} value={spec} className="bg-gray-800">
+                        {spec}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Image URL
+                </label>
+                <input
+                  type="url"
+                  value={newTrainer.image}
+                  onChange={(e) =>
+                    setNewTrainer({ ...newTrainer, image: e.target.value })
+                  }
+                  className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                  placeholder="https://example.com/trainer-image.jpg"
+                />
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Experience
+                  </label>
+                  <input
+                    type="text"
+                    value={newTrainer.experience}
+                    onChange={(e) =>
+                      setNewTrainer({
+                        ...newTrainer,
+                        experience: e.target.value,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                    placeholder="e.g., 5+ years"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Clients
+                  </label>
+                  <input
+                    type="number"
+                    value={newTrainer.clients}
+                    onChange={(e) =>
+                      setNewTrainer({
+                        ...newTrainer,
+                        clients: parseInt(e.target.value) || 0,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                    placeholder="0"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Rating
+                  </label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="5"
+                    value={newTrainer.rating}
+                    onChange={(e) =>
+                      setNewTrainer({
+                        ...newTrainer,
+                        rating: parseFloat(e.target.value) || 0,
+                      })
+                    }
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400"
+                    placeholder="4.5"
+                  />
+                </div>
+              </div>
+
+              {/* Social Links */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Social Links
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">
+                      Facebook
+                    </label>
+                    <input
+                      type="url"
+                      value={newTrainer.socialLinks.facebook}
+                      onChange={(e) =>
+                        setNewTrainer({
+                          ...newTrainer,
+                          socialLinks: {
+                            ...newTrainer.socialLinks,
+                            facebook: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400 text-sm"
+                      placeholder="https://facebook.com/username"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">
+                      Instagram
+                    </label>
+                    <input
+                      type="url"
+                      value={newTrainer.socialLinks.instagram}
+                      onChange={(e) =>
+                        setNewTrainer({
+                          ...newTrainer,
+                          socialLinks: {
+                            ...newTrainer.socialLinks,
+                            instagram: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400 text-sm"
+                      placeholder="https://instagram.com/username"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs text-gray-400 mb-1">
+                      Twitter
+                    </label>
+                    <input
+                      type="url"
+                      value={newTrainer.socialLinks.twitter}
+                      onChange={(e) =>
+                        setNewTrainer({
+                          ...newTrainer,
+                          socialLinks: {
+                            ...newTrainer.socialLinks,
+                            twitter: e.target.value,
+                          },
+                        })
+                      }
+                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200 text-white placeholder-gray-400 text-sm"
+                      placeholder="https://twitter.com/username"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex space-x-4 pt-4">
+                <button
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setEditingTrainer(null);
+                  }}
+                  className="bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1 border border-gray-700"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveTrainer}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-200 flex-1"
+                >
+                  {editingTrainer ? "Update Trainer" : "Add Trainer"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
