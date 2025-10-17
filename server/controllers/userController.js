@@ -79,7 +79,7 @@ export const registerUser = async (req, res) => {
 
     // Set HTTP-only cookie for registration as well
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -161,7 +161,7 @@ export const loginUser = async (req, res) => {
 
     // Set HTTP-only cookie
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
@@ -188,7 +188,7 @@ export const logoutUser = async (req, res) => {
   try {
     // Clear the token cookie
     res.clearCookie("token", {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
     });
