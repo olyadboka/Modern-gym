@@ -35,7 +35,7 @@ app.use(
   cors({
     origin: [
       process.env.FRONTEND_URL || "http://localhost:5173",
-      process.env.ADMIN_URL || "http://localhost:5174",
+      process.env.ADMIN_URL || "https://modern-gym-frontend-1.onrender.com/",
       "https://modern-gym-backend.onrender.com",
       "http://localhost:3001",
     ],
