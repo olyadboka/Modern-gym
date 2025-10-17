@@ -41,13 +41,30 @@ const Login = ({ setIsAuthenticated, setUser }) => {
         setError(response.data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Admin login error:", error);
-      if (error.response?.data?.message) {
-        setError(error.response.data.message);
-      } else if (error.response?.status === 401) {
-        setError("Invalid email or password");
+      console.error("🔴 Full login error details:", error);
+      console.error("🔴 Error code:", error.code);
+      console.error("🔴 Error message:", error.message);
+      console.error("🔴 Error name:", error.name);
+      console.error("🔴 Has response?", !!error.response);
+      console.error("🔴 Has request?", !!error.request);
+
+      if (error.code === "ERR_NETWORK") {
+        setError(
+          "❌ Cannot connect to server. Please make sure the backend is running on localhost:3000"
+        );
+      } else if (error.response) {
+        // Server responded with error status
+        console.error("🔴 Response status:", error.response.status);
+        console.error("🔴 Response data:", error.response.data);
+        setError(
+          error.response.data?.message ||
+            `Server error: ${error.response.status}`
+        );
+      } else if (error.request) {
+        // Request was made but no response received
+        setError("No response from server. Backend might be down.");
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login failed. Please check your connection and try again.");
       }
     } finally {
       setIsLoading(false);

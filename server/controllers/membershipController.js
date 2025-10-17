@@ -5,7 +5,7 @@ import Membership from '../models/membership_model.js';
 export const getAllMemberships = async (req, res) => {
   try {
     const memberships = await Membership.find({ isActive: true }).sort({ price: 1 });
-    res.status(200).json({ memberships });
+    res.status(200).json({ success: true, memberships });
   } catch (error) {
     console.error('Get memberships error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -22,7 +22,7 @@ export const getMembershipById = async (req, res) => {
       return res.status(404).json({ message: 'Membership not found' });
     }
 
-    res.status(200).json({ membership });
+    res.status(200).json({ success: true, membership });
   } catch (error) {
     console.error('Get membership error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -55,6 +55,7 @@ export const createMembership = async (req, res) => {
     await membership.save();
 
     res.status(201).json({
+      success: true,
       message: 'Membership created successfully',
       membership
     });
@@ -89,6 +90,7 @@ export const updateMembership = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Membership updated successfully',
       membership
     });
@@ -109,7 +111,7 @@ export const deleteMembership = async (req, res) => {
       return res.status(404).json({ message: 'Membership not found' });
     }
 
-    res.status(200).json({ message: 'Membership deleted successfully' });
+    res.status(200).json({ success: true, message: 'Membership deleted successfully' });
   } catch (error) {
     console.error('Delete membership error:', error);
     res.status(500).json({ message: 'Server error' });

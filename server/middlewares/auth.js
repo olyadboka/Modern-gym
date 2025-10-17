@@ -12,7 +12,7 @@ export const authenticateToken = async (req, res, next) => {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key"
+      process.env.JWT_SECRET || process.env.JWT_TOKEN_SECRET || "your-fallback-secret-key"
     );
     const user = await User.findById(decoded.userId).select("-password");
 

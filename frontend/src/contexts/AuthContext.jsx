@@ -22,22 +22,17 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const token = localStorage.getItem("token")
-        ? localStorage.getItem("token")
-        : cookieStore.get("token")?.value;
-      const storedUser = localStorage.getItem("user")
-        ? JSON.parse(localStorage.getItem("user"))
-        : cookieStore.get("user")
-          ? JSON.parse(cookieStore.get("user").value)
-          : null;
+      const token = localStorage.getItem("token");
+      const storedUser = localStorage.getItem("user");
 
       if (token && storedUser) {
         try {
+          // Verify token with backend
           const response = await authAPI.getProfile();
           if (response.data.success) {
             setUser(response.data.user);
             setIsAuthenticated(true);
-
+            // Update stored user data
             localStorage.setItem("user", JSON.stringify(response.data.user));
           } else {
             clearAuth();

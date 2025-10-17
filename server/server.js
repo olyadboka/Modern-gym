@@ -6,6 +6,8 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
 import { DbConnection } from "./configs/dbconnection.js";
+import bcrypt from "bcryptjs";
+import User from "./models/user_model.js";
 
 // Import routes
 import userRoutes from "./routes/userRoutes.js";
@@ -30,11 +32,15 @@ app.use(limiter);
 // CORS configuration
 app.use(
   cors({
-    origin:
-      process.env.FRONTEND_URL ||
-      "http://localhost:5173" ||
-      "http://localhost:5174",
+    origin: [
+      process.env.FRONTEND_URL || "http://localhost:5173",
+      process.env.ADMIN_URL || "http://localhost:5174",
+      "http://localhost:3000",
+      "http://localhost:3001",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
 
@@ -98,9 +104,34 @@ app.use((err, req, res, next) => {
 
 const port = process.env.SERVER_PORT || 3000;
 
-app.listen(port, () => {
+app.listen(port, async () => {
   console.log(`🚀 FitFat Gym API Server is running on port ${port}`);
   console.log(`📊 Health check: http://localhost:${port}/health`);
   console.log(`🌐 API Base URL: http://localhost:${port}/api`);
-  DbConnection();
+
+  // Connect to database
+  await DbConnection();
+
+  // Ensure an admin user exists for dashboard login
+  try {
+    const adminEmail = process.env.ADMIN_EMAIL || "admin@fitfatgym.com";
+    const adminPassword = process.env.ADMIN_PASSWORD || "Admin123";
+    let admin = await User.findOne({ email: adminEmail });
+    if (!admin) {
+      const hashed = await bcrypt.hash(adminPassword, 12);
+      admin = await User.create({
+        name: "Admin",
+        email: adminEmail,
+        phone: "0000000000",
+        password: hashed,
+        role: "admin",
+        membershipType: "vip",
+      });
+      console.log("👑 Seeded default admin:", adminEmail);
+    } else {
+      console.log("👑 Admin user already exists:", adminEmail);
+    }
+  } catch (e) {
+    console.error("Failed to ensure admin user:", e.message);
+  }
 });

@@ -96,6 +96,7 @@ export const registerUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error during registration",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };
@@ -177,6 +178,7 @@ export const loginUser = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Server error during login",
+      error: process.env.NODE_ENV === "development" ? error.message : undefined,
     });
   }
 };

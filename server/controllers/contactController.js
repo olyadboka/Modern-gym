@@ -83,7 +83,7 @@ export const getContactById = async (req, res) => {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
-    res.status(200).json({ contact });
+    res.status(200).json({ success: true, contact });
   } catch (error) {
     console.error('Get contact error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -113,6 +113,7 @@ export const updateContactStatus = async (req, res) => {
     }
 
     res.status(200).json({
+      success: true,
       message: 'Contact status updated successfully',
       contact
     });
@@ -133,7 +134,7 @@ export const deleteContact = async (req, res) => {
       return res.status(404).json({ message: 'Contact not found' });
     }
 
-    res.status(200).json({ message: 'Contact deleted successfully' });
+    res.status(200).json({ success: true, message: 'Contact deleted successfully' });
   } catch (error) {
     console.error('Delete contact error:', error);
     res.status(500).json({ message: 'Server error' });
@@ -156,6 +157,7 @@ export const getContactStats = async (req, res) => {
     });
 
     res.status(200).json({
+      success: true,
       stats: {
         total,
         new: newMessages,
