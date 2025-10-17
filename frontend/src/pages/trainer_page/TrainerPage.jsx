@@ -190,7 +190,7 @@ const TrainerPage = () => {
       <HeroSection
         title="Meet Our Trainers"
         subtitle="Our certified fitness professionals are here to guide you on your journey to better health and fitness."
-        backgroundImage="7.jpeg"
+        backgroundImage="/7.jpeg"
       />
 
       {/* Filter Section */}
