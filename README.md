@@ -129,7 +129,7 @@ npm run dev
 ## 🌐 Access Points
 
 - **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3000
+- **Backend API**: https://modern-gym-backend.onrender.com
 - **Admin Dashboard**: http://localhost:5174 (or next available port)
 
 ## 🔐 Default Admin Credentials

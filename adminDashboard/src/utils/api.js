@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://modern-gym-backend.onrender.com/api",
   timeout: 10000,
   withCredentials: true, // Important for cookies
 });

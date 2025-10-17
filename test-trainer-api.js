@@ -5,7 +5,9 @@ async function testTrainerAPI() {
     console.log("Testing trainer API...");
 
     // Test trainer endpoint
-    const response = await axios.get("http://localhost:3000/api/trainers");
+    const response = await axios.get(
+      "https://modern-gym-backend.onrender.com/api/trainers"
+    );
     console.log("✅ Trainer API Response:", response.data);
 
     if (response.data.success && response.data.trainers) {
