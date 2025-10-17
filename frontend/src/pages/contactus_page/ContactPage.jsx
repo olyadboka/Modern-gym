@@ -29,7 +29,7 @@ const ContactPage = () => {
   const onSubmit = async (data) => {
     setIsLoading(true);
     setError("");
-    
+
     try {
       const contactData = {
         name: `${data.firstName} ${data.lastName}`,
@@ -40,7 +40,7 @@ const ContactPage = () => {
       };
 
       const response = await contactAPI.createContact(contactData);
-      
+
       if (response.data.success) {
         setIsSubmitted(true);
         reset();
@@ -62,7 +62,7 @@ const ContactPage = () => {
       <HeroSection
         title="Contact Us"
         subtitle=" Get in touch with our team. We're here to help you start your fitness journey and answer any questions you may have."
-        backgroundImage="../../assets/images/bg.jpeg"
+        backgroundImage="7.jpeg"
       />
 
       {/* Contact Information */}

@@ -86,12 +86,11 @@ const SchedulePage = () => {
         if (response.data.success) {
           setSchedules(response.data.schedules || []);
         } else {
-          // Fallback to default schedules if API fails
           setSchedules(defaultSchedules);
         }
       } catch (error) {
         console.error("Error fetching schedules:", error);
-        // Fallback to default schedules
+
         setSchedules(defaultSchedules);
       } finally {
         setLoading(false);
@@ -123,7 +122,7 @@ const SchedulePage = () => {
       <HeroSection
         title="Class Schedule"
         subtitle="Find the perfect class that fits your schedule and fitness goals."
-        backgroundImage="../../assets/images/bg.jpeg"
+        backgroundImage="7.jpeg"
       />
 
       {/* Filters */}

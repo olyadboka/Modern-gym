@@ -130,7 +130,7 @@ const MembershipPage = () => {
       <HeroSection
         title="Membership Plans"
         subtitle="Choose the perfect membership plan that fits your fitness goals and lifestyle."
-        backgroundImage="../../assets/images/bg.jpeg"
+        backgroundImage="7.jpeg"
       />
 
       {/* Membership Plans */}
