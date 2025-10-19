@@ -24,7 +24,7 @@ router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 
 // Protected routes
-router.use(authenticateToken); // All routes below require authentication
+router.use(authenticateToken);
 
 // User profile routes
 router.get("/profile", getUserProfile);
