@@ -14,6 +14,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 - **Authentication**: Login and signup pages with form validation
 - **Responsive**: Mobile-first design that works on all devices
 - **Animations**: Smooth animations using Framer Motion
+<img width="1920" height="1080" alt="Screenshot (1)" src="https://github.com/user-attachments/assets/e3547081-c822-4380-92ef-9c227512b573" />
 
 ### Backend (Node.js + Express + MongoDB)
 
@@ -23,6 +24,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 - **Security**: Helmet, CORS, rate limiting, and other security measures
 - **Database**: MongoDB with Mongoose ODM
 - **Error Handling**: Comprehensive error handling and logging
+<img width="1920" height="1080" alt="Screenshot (2)" src="https://github.com/user-attachments/assets/3dd0beed-46cd-43c3-9c38-9e04e61c293a" />
 
 ### Admin Dashboard (React + Tailwind CSS)
 
@@ -31,6 +33,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 - **Trainer Management**: Manage trainer profiles and information
 - **Contact Management**: Handle customer inquiries and messages
 - **Responsive Design**: Works on desktop and mobile devices
+<img width="1920" height="1080" alt="Screenshot (4)" src="https://github.com/user-attachments/assets/9895e3f6-ff29-41c5-9bf8-6013886527ec" />
 
 ## 🛠️ Technology Stack
 
@@ -42,6 +45,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 - Framer Motion 10.16.4
 - Lucide React (Icons)
 - React Hook Form 7.45.4
+<img width="1920" height="1080" alt="Screenshot (6)" src="https://github.com/user-attachments/assets/f553e751-e066-4a5f-9a38-8a11685c2bd2" />
 
 ### Backend
 
@@ -61,6 +65,8 @@ demo: https://modern-gym-frontend-0.onrender.com
 - Recharts for data visualization
 - Lucide React (Icons)
 - React Hook Form 7.45.4
+<img width="1920" height="1080" alt="Screenshot (15)" src="https://github.com/user-attachments/assets/118aad1a-de6a-4da7-965a-c52b5cbac9f4" />
+<img width="1920" height="1080" alt="Screenshot (14)" src="https://github.com/user-attachments/assets/624d1b25-cc53-4ff6-bd03-ce4e32fb5096" />
 
 ## 📦 Installation & Setup
 
@@ -69,6 +75,9 @@ demo: https://modern-gym-frontend-0.onrender.com
 - Node.js (v16 or higher)
 - MongoDB (local installation or MongoDB Atlas)
 - Git
+<img width="1920" height="1080" alt="Screenshot (12)" src="https://github.com/user-attachments/assets/789633b2-f558-4fbd-8d6a-fd6ec1597274" />
+<img width="1920" height="1080" alt="Screenshot (13)" src="https://github.com/user-attachments/assets/6fea4fc7-dc44-4b41-bc51-73f59a9ade4d" />
+<img width="1920" height="1080" alt="Screenshot (11)" src="https://github.com/user-attachments/assets/b76aa97d-8e78-429a-872f-e02f2ada2419" />
 
 ### 1. Clone the Repository
 
@@ -76,6 +85,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 git clone <repository-url>
 cd modern-gym
 ```
+<img width="1920" height="1080" alt="Screenshot (7)" src="https://github.com/user-attachments/assets/38009498-e611-4566-9771-22258e73a0d1" />
 
 ### 2. Backend Setup
 
@@ -119,6 +129,7 @@ npm run dev
 cd adminDashboard
 npm install
 ```
+<img width="1920" height="1080" alt="Screenshot (16)" src="https://github.com/user-attachments/assets/23748a68-2e0a-4de3-960a-737357d0d03c" />
 
 Start the admin dashboard:
 
@@ -130,6 +141,11 @@ npm run dev
 
 
 ## 📱 Pages & Features
+<img width="1920" height="1080" alt="Screenshot (13)" src="https://github.com/user-attachments/assets/f122f717-814b-40b1-b296-ede6cec8fc65" />
+<img width="1920" height="1080" alt="Screenshot (10)" src="https://github.com/user-attachments/assets/81325d24-0725-465f-990d-01774fa5d13f" />
+<img width="1920" height="1080" alt="Screenshot (17)" src="https://github.com/user-attachments/assets/168cb199-ad77-4b56-bca3-400d0026ff2c" />
+<img width="1920" height="1080" alt="Screenshot (8)" src="https://github.com/user-attachments/assets/113074ed-762a-415b-8b88-7de26deb43ee" />
+<img width="1920" height="1080" alt="Screenshot (9)" src="https://github.com/user-attachments/assets/3b2c7760-d65b-4254-8f4e-ec0168455e9c" />
 
 ### Frontend Pages
 
