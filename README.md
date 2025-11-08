@@ -68,13 +68,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 <img width="1920" height="1080" alt="Screenshot (15)" src="https://github.com/user-attachments/assets/118aad1a-de6a-4da7-965a-c52b5cbac9f4" />
 <img width="1920" height="1080" alt="Screenshot (14)" src="https://github.com/user-attachments/assets/624d1b25-cc53-4ff6-bd03-ce4e32fb5096" />
 
-## 📦 Installation & Setup
 
-### Prerequisites
-
-- Node.js (v16 or higher)
-- MongoDB (local installation or MongoDB Atlas)
-- Git
 <img width="1920" height="1080" alt="Screenshot (12)" src="https://github.com/user-attachments/assets/789633b2-f558-4fbd-8d6a-fd6ec1597274" />
 <img width="1920" height="1080" alt="Screenshot (13)" src="https://github.com/user-attachments/assets/6fea4fc7-dc44-4b41-bc51-73f59a9ade4d" />
 <img width="1920" height="1080" alt="Screenshot (11)" src="https://github.com/user-attachments/assets/b76aa97d-8e78-429a-872f-e02f2ada2419" />
