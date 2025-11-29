@@ -6,7 +6,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 
 ### Frontend (React + Tailwind CSS)
 
-- **Modern Design**: Beautiful, responsive design matching the FitFat template
+- **Modern Design**: Beautiful, responsive design matching the FitFat template... 
 - **Homepage**: Hero section, features, about, stats, testimonials, and CTA sections
 - **About Page**: Gym story, mission, vision, values, and team information
 - **Trainers Page**: Professional trainer profiles with filtering and detailed information
