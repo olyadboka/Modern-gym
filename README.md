@@ -18,7 +18,7 @@ demo: https://modern-gym-frontend-0.onrender.com
 
 ### Backend (Node.js + Express + MongoDB)
 
-- **RESTful API**: Complete API with user, trainer, and contact management
+ **RESTful API**: Complete API with user, trainer, and contact management
 - **Authentication**: JWT-based authentication with bcrypt password hashing
 - **Validation**: Input validation using express-validator
 - **Security**: Helmet, CORS, rate limiting, and other security measures
